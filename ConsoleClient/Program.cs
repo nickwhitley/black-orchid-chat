@@ -7,7 +7,7 @@ namespace ConsoleClient
 {
     class Program
     {
-        public static HubConnection _connection = ConnectToServer(@"https://aa81-2601-548-4100-c1f0-4c6d-8e0-4cf0-7abf.ngrok.io/chat");
+        public static HubConnection _connection = ConnectToServer(@"https://2a73-2601-548-4100-c1f0-60e7-690c-3658-409b.ngrok.io/chat");
         static void Main(string[] args)
         {
             try
@@ -21,7 +21,6 @@ namespace ConsoleClient
                 ReadKey();
                 Environment.Exit(0);
             }
-            _connection.StartAsync().Wait();
 
             AskForUserName();
 
