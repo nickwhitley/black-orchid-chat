@@ -6,4 +6,14 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="Media\BlackOrchidLogoBlueResized.png" />
+    <None Remove="Media\InstaProfilePic.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Media\BlackOrchidLogoBlueResized.png" />
+    <Resource Include="Media\InstaProfilePic.png" />
+  </ItemGroup>
+
 </Project>
