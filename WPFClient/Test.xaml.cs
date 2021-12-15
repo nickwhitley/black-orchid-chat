@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.SignalR.Client;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,19 +16,14 @@ using System.Windows.Shapes;
 namespace WPFClient
 {
     /// <summary>
-    /// Interaction logic for Login.xaml
+    /// Interaction logic for Test.xaml
     /// </summary>
-    public partial class Login : Page
+    public partial class Test : Page
     {
-        public Login()
+        public Test(string userName, string password)
         {
+            userName = 
             InitializeComponent();
-        }
-
-        private void loginButton_Click(object sender, RoutedEventArgs e)
-        {
-            NavigationService.Navigate(new Uri("Test.xaml", UriKind.Relative));
-
         }
     }
 }

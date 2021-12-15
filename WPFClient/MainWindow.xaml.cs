@@ -17,19 +17,13 @@ using System.Windows.Shapes;
 namespace WPFClient
 {
     /// <summary>
-    /// Interaction logic for Login.xaml
+    /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class Login : Page
+    public partial class MainWindow : Window
     {
-        public Login()
+        public MainWindow()
         {
             InitializeComponent();
-        }
-
-        private void loginButton_Click(object sender, RoutedEventArgs e)
-        {
-            NavigationService.Navigate(new Uri("Test.xaml", UriKind.Relative));
-
         }
     }
 }
