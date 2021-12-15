@@ -20,43 +20,56 @@ namespace WebServer.Hubs
         private static Dictionary<string, string> passwordDictionary = new Dictionary<string, string>();
 
         /// <summary>
-        /// Retreive client's sent username and distributes it to required methods.
-        /// </summary>
-        /// <param name="username"></param>
-        /// <returns></returns>
-        public async Task RetrieveUsername(string username)
-        {
-            SaveUsername(username);
-            await BroadcastUserConnected(username);
-            await UserCountNotification();  
-        }
-
-        public void RetrieveUserPassword(string username, string password)
-        {
-            SaveUsernameAndPassword(username, password);
-        }
-
-        /// <summary>
-        /// Saves clients username to connections dictionary.
-        /// </summary>
-        /// <param name="username"></param>
-        private void SaveUsername(string username)
-        {
-            connectionDictionary.Add(Context.ConnectionId, username);
-            
-        }
-
-        /// <summary>
-        /// Saves clients username and password to password dictionary.
+        /// Receives user information upon login and distributes it to required methods.
         /// </summary>
         /// <param name="username"></param>
         /// <param name="password"></param>
         /// <returns></returns>
-        private bool SaveUsernameAndPassword(string username, string password)
+        public async Task ReceiveUserLoginInfo(string username, string password)
         {
+            if (AuthenticateUser(username, password))
+            {
+                await BroadcastUserConnected(username);
+                await UserCountNotification();
+            }
+        }
 
-            //IN PROGRESS - NEED TO ADD EXISTING USER CHECKING!
-            return passwordDictionary.TryAdd(username, password);
+        /// <summary>
+        /// Saves user's information in dictionaries.
+        /// </summary>
+        /// <param name="username"></param>
+        private void SaveUser(string username, string password)
+        {
+            connectionDictionary.Add(Context.ConnectionId, username);
+            passwordDictionary.Add(username, password);
+        }
+
+        /// <summary>
+        /// Checks if user exists in user dictionaries and verifies password entered.
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
+        /// <returns> true if user either doesn't exist in dictionary and has enter correctly formatted information
+        /// or if user does exist and has enter their correct password.</returns>
+        private bool AuthenticateUser(string username, string password)
+        {
+            if (passwordDictionary.ContainsKey(username) && !passwordDictionary[username].Equals(password))
+            {
+                return false;
+            }
+            else if (!passwordDictionary.ContainsKey(username))
+            {
+                if (username.Length > 18 || password.Length > 14)
+                {
+
+                    return false;
+                } else
+                {
+                    SaveUser(username, password);
+                    return true;
+                }
+            }
+            return true;
         }
 
         /// <summary>
@@ -76,13 +89,13 @@ namespace WebServer.Hubs
         /// <returns></returns>
         private async Task UserCountNotification()
         {
-            if (clientUsernames.Count == 2)
+            if (connectionDictionary.Count == 2)
             {
                 await Clients.Caller.SendAsync("ReceiveChatMessage", "There is 1 other user online.");
             }
             else
             {
-                await Clients.Caller.SendAsync("ReceiveChatMessage", $"There are {(clientUsernames.Count) - 1} other users online.");
+                await Clients.Caller.SendAsync("ReceiveChatMessage", $"There are {(connectionDictionary.Count) - 1} other users online.");
             }
         }
 
