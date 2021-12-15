@@ -1,0 +1,17 @@
+﻿<Window x:Class="WPFClient.MainWindow"
+        WindowStyle="ThreeDBorderWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WPFClient"
+        mc:Ignorable="d"
+        Title="Login - BO Chat" Height="542" Width="847"
+        FontFamily="Calibri" FontSize="20"
+        Background="#23272a" Icon="/Media/InstaProfilePic.png" >
+    <Frame x:Name="frame">
+        <Frame.Source>/Login.xaml</Frame.Source>
+    </Frame>
+
+</Window>
+

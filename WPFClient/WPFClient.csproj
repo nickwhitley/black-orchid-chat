@@ -1,19 +1,19 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net5.0-windows</TargetFramework>
-    <UseWPF>true</UseWPF>
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net5.0-windows</TargetFramework>
+		<UseWPF>true</UseWPF>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <None Remove="Media\BlackOrchidLogoBlueResized.png" />
-    <None Remove="Media\InstaProfilePic.png" />
-  </ItemGroup>
+	<ItemGroup>
+		<Resource Include="Media\BlackOrchidLogoBlueResized.png" />
+		<Resource Include="Media\InstaProfilePic.png" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Resource Include="Media\BlackOrchidLogoBlueResized.png" />
-    <Resource Include="Media\InstaProfilePic.png" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.1.0" />
+		<PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="6.0.1" />
+	</ItemGroup>
 
 </Project>
