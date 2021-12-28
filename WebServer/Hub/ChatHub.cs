@@ -19,6 +19,11 @@ namespace WebServer.Hubs
         /// </summary>
         private static Dictionary<string, string> passwordDictionary = new Dictionary<string, string>();
 
+        public ChatHub()
+        {
+            Console.WriteLine("hub is constructed.");
+        }
+
         /// <summary>
         /// Receives user information upon login and distributes it to required methods.
         /// </summary>

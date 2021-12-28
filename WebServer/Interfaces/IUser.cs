@@ -1,9 +1,10 @@
-﻿namespace WebServer.User
+﻿namespace WebServer.Interfaces
 {
     public interface IUser
     {
-        string connectionId { get; set; }
-        string password { get; set; }
-        string username { get; set; }
+        string ConnectionId { get; set; }
+        string Password { get; set; }
+        string Username { get; set; }
+        bool IsOnline { get; }
     }
 }

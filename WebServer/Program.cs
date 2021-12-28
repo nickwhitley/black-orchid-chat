@@ -22,9 +22,7 @@ namespace WebServer
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-            //.UseUrls(@"https://localhost:1041", @"http://localhost:1040")
-            .UseStartup<Startup>()
-           ;
+            .UseStartup<Startup>();
 
         private static bool isPortAvailable(int port)
         {
