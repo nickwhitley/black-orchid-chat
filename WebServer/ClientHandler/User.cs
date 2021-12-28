@@ -4,12 +4,15 @@ using System.Linq;
 using System.Threading.Tasks;
 using WebServer.Interfaces;
 
-namespace WebServer.User
+namespace WebServer.ClientHandler
 {
     public class User : IUser
     {
-        public string username { get; set; }
-        public string password { get; set; }
-        public string connectionId { get; set; }
+        public string Username { get; set; }
+        public string Password { get; set; }
+        public string ConnectionId { get; set; }
+        public bool IsOnline { get; set; }
+
+        
     }
 }
