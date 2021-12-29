@@ -9,27 +9,31 @@ using WebServer.Interfaces;
 
 namespace WebServer.ClientHandler
 {
-    public class UserLogger : IUserLogger, IFileProcessor, IUserAuthenticator
+    public class UserLogger : IUserLogger
     {
         private List<IUser> _users;
         public List<IUser> Users { get => _users;  set => _users = LoadListFromCSV(); }
         
         public string FilePath => @"./Logs/UserLog.csv";
 
+        private Dictionary<IUser, string> _tempConnections;
+        public Dictionary<IUser, string> TempConnections { get => _tempConnections; }
+
         public UserLogger()
         {
 
         }
 
-        
-        public bool AuthenticateUserPassword(IUser user, string password)
+        public bool AuthenticateUser(IUser user)
         {
-            throw new NotImplementedException();
-        }
-
-        public bool DoesUserExist(IUser user)
-        {
-            throw new NotImplementedException();
+            if (!_users.Contains(user))
+            {
+                return true;
+            } else if(_users.Any(u => u == user))
+            {
+                return true;
+            }
+            return false;
         }
 
         public List<IUser> LoadListFromCSV()
@@ -44,10 +48,7 @@ namespace WebServer.ClientHandler
             foreach(string line in lines)
             {
                 string[] values = line.Split(',');
-                user = Factory.CreateUser();
-                user.Username = values[0];
-                user.Password = values[1];
-                user.ConnectionId = values[2];
+                user = Factory.CreateUser(values[0], values[1]);            
 
                 output.Add(user);
             }
@@ -64,11 +65,11 @@ namespace WebServer.ClientHandler
         {
             List<string> lines = new();
             //add file header
-            lines.Add("Username,Password,ConnectionID");
+            lines.Add("Username,Password");
             
             foreach(var user in Users)
             {
-                lines.Add($"{ user.Username },{ user.Password },{ user.ConnectionId }");
+                lines.Add($"{ user.Username },{ user.Password }");
             }
 
             File.WriteAllLines(FilePath, lines);
@@ -77,6 +78,33 @@ namespace WebServer.ClientHandler
         public void SaveUser(IUser user)
         {
             Users.Add(user);
+        }
+
+        public void AddConnection(IUser user, string connectionId)
+        {
+            _tempConnections.Add(user, connectionId);
+        }
+
+        public void RemoveConnection(IUser user)
+        {
+            _tempConnections.Remove(user);
+        }
+
+        public int NumOfConnections()
+        {
+            return _tempConnections.Count;
+        }
+
+        public string GetConnectionId(IUser user)
+        {
+            string value = " Connection ID not found. ";
+            if (_tempConnections.TryGetValue(user, out value))
+            {
+                return value;
+            }
+            
+                return value;
+            
         }
     }
 }
