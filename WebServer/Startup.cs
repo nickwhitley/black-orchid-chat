@@ -1,3 +1,4 @@
+using Microsoft.AspNet.SignalR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -8,7 +9,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebServer.ClientHandler;
+using WebServer.Factories;
 using WebServer.Hubs;
+using WebServer.Interfaces;
 
 namespace WebServer
 {
@@ -25,11 +29,18 @@ namespace WebServer
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSignalR();
+            services.AddScoped<IUserLogger, UserLogger>();
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            
+            GlobalHost.DependencyResolver.Register(
+                typeof(ChatHub),
+                () => new ChatHub(new UserLogger()));
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

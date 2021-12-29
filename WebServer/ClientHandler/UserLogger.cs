@@ -16,6 +16,11 @@ namespace WebServer.ClientHandler
         
         public string FilePath => @"./Logs/UserLog.csv";
 
+        public UserLogger()
+        {
+
+        }
+
         
         public bool AuthenticateUserPassword(IUser user, string password)
         {

@@ -3,12 +3,23 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebServer.ClientHandler;
+using WebServer.Interfaces;
 
 namespace WebServer.Hubs
 {
 
     public class ChatHub : Hub
     {
+
+        IUserLogger _userLogger;
+
+        public ChatHub(IUserLogger userLogger)
+        {
+            _userLogger = userLogger;
+            
+        }
+
         /// <summary>
         /// Dictionary contains connectionId keys linked to username values. Persistant across server instance.
         /// </summary>
@@ -18,11 +29,6 @@ namespace WebServer.Hubs
         /// Dictionary holds username keys and password values to validate user login.
         /// </summary>
         private static Dictionary<string, string> passwordDictionary = new Dictionary<string, string>();
-
-        public ChatHub()
-        {
-            Console.WriteLine("hub is constructed.");
-        }
 
         /// <summary>
         /// Receives user information upon login and distributes it to required methods.
@@ -39,6 +45,12 @@ namespace WebServer.Hubs
             }
         }
 
+        public async Task RetreiveUsername(string username)
+        {
+            await BroadcastUserConnected(username);
+            await UserCountNotification(); 
+        }
+
         /// <summary>
         /// Saves user's information in dictionaries.
         /// </summary>
@@ -48,6 +60,7 @@ namespace WebServer.Hubs
             connectionDictionary.Add(Context.ConnectionId, username);
             passwordDictionary.Add(username, password);
         }
+
 
         /// <summary>
         /// Checks if user exists in user dictionaries and verifies password entered.
