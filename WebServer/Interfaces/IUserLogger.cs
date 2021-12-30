@@ -7,10 +7,9 @@ using System.Threading.Tasks;
 
 namespace WebServer.Interfaces
 {
-    public interface IUserLogger
+    public interface IUserLogger : IUserAuthenticator, IFileProcessor, ITempConnections
     {
         List<IUser> Users { get; set; }
-
 
         void SaveUser(IUser client);
 

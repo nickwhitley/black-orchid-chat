@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WebServer.ClientHandler;
+using WebServer.Factories;
 using WebServer.Interfaces;
 
 namespace WebServer.Hubs
@@ -19,6 +20,8 @@ namespace WebServer.Hubs
             _userLogger = userLogger;
             
         }
+
+
 
         /// <summary>
         /// Dictionary contains connectionId keys linked to username values. Persistant across server instance.
@@ -38,6 +41,12 @@ namespace WebServer.Hubs
         /// <returns></returns>
         public async Task ReceiveUserLoginInfo(string username, string password)
         {
+            IUser user = Factory.CreateUser(username, password);
+            if (!_userLogger.AuthenticateUser(user))
+            {
+
+            }
+            _userLogger.SaveUser(Factory.CreateUser(username, password));
             if (AuthenticateUser(username, password))
             {
                 await BroadcastUserConnected(username);

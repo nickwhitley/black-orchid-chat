@@ -8,7 +8,7 @@ namespace WebServer.Interfaces
 {
     public interface IUserAuthenticator
     {
-        bool AuthenticateUserPassword(IUser user, string password);
-        bool DoesUserExist(IUser user);
+        bool AuthenticateUser(IUser user);
+        
     }
 }
