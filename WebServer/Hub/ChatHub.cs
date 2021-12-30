@@ -23,18 +23,13 @@ namespace WebServer.Hubs
         public async Task ReceiveUserLoginInfo(string username, string password)
         {
             IUser user = Factory.CreateUser(username, password);
-            if (!_userLogger.AuthenticateUser(user))
-            {
-
-            }
-            else
+            if (_userLogger.AuthenticateUser(user))
             {
                 _userLogger.SaveUser(user);
                 _userLogger.AddConnection(Context.ConnectionId, user);
                 await BroadcastUserConnected(user.Username);
                 await BroadcastUserCount(_userLogger);
             }
-
         }
 
         public async Task BroadcastUserConnected(string username)
