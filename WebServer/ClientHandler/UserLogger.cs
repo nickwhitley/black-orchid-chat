@@ -26,10 +26,11 @@ namespace WebServer.ClientHandler
 
         public bool AuthenticateUser(IUser user)
         {
-            if (!_users.Contains(user))
+            
+            if (!Users.Contains(user))
             {
                 return true;
-            } else if(_users.Any(u => u == user))
+            } else if(Users.Any(u => (u.Username == user.Username) && (u.Password == user.Password)))
             {
                 return true;
             }
