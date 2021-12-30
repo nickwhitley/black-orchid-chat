@@ -16,8 +16,8 @@ namespace WebServer.ClientHandler
         
         public string FilePath => @"./Logs/UserLog.csv";
 
-        private Dictionary<IUser, string> _tempConnections;
-        public Dictionary<IUser, string> TempConnections { get => _tempConnections; }
+        private Dictionary<string, IUser> _tempConnections;
+        public Dictionary<string, IUser> TempConnections { get => _tempConnections; }
 
         public UserLogger()
         {
@@ -81,14 +81,14 @@ namespace WebServer.ClientHandler
             Users.Add(user);
         }
 
-        public void AddConnection(IUser user, string connectionId)
+        public void AddConnection(string connectionId, IUser user)
         {
-            _tempConnections.Add(user, connectionId);
+            _tempConnections.Add(connectionId, user);
         }
 
-        public void RemoveConnection(IUser user)
+        public void RemoveConnection(string connectionId)
         {
-            _tempConnections.Remove(user);
+            _tempConnections.Remove(connectionId);
         }
 
         public int NumOfConnections()
@@ -96,16 +96,6 @@ namespace WebServer.ClientHandler
             return _tempConnections.Count;
         }
 
-        public string GetConnectionId(IUser user)
-        {
-            string value = " Connection ID not found. ";
-            if (_tempConnections.TryGetValue(user, out value))
-            {
-                return value;
-            }
-            
-                return value;
-            
-        }
+       
     }
 }

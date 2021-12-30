@@ -10,27 +10,25 @@ namespace WebServer.Interfaces
         /// <summary>
         /// Holds a user key and connection id value.
         /// </summary>
-        public Dictionary<IUser, string> TempConnections { get; }
+        public Dictionary<string, IUser> TempConnections { get; }
 
         /// <summary>
         /// Adds connection to TempConnections dictionary
         /// </summary>
         /// <param name="user"></param>
         /// <param name="connectionId"></param>
-        public void AddConnection(IUser user, string connectionId);
+        public void AddConnection(string connectionId, IUser user);
 
         /// <summary>
         /// Removes connection from TempConnections dictionary
         /// </summary>
         /// <param name="user"></param>
-        public void RemoveConnection(IUser user);
+        public void RemoveConnection(string connectionId);
 
         /// <summary>
         /// 
         /// </summary>
         /// <returns> current number of connections </returns>
         public int NumOfConnections();
-
-        public string GetConnectionId(IUser user);
     }
 }
