@@ -18,11 +18,10 @@ namespace WPFClient
     /// <summary>
     /// Interaction logic for Test.xaml
     /// </summary>
-    public partial class Test : Page
+    public partial class ChatPage : Page
     {
-        public Test(string userName, string password)
+        public ChatPage()
         {
-            userName = 
             InitializeComponent();
         }
     }

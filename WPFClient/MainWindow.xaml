@@ -8,9 +8,10 @@
         mc:Ignorable="d"
         Title="Login - BO Chat" Height="542" Width="847"
         FontFamily="Calibri" FontSize="20"
-        Background="#23272a" Icon="/Media/InstaProfilePic.png" >
+        Background="#23272a" Icon="/Media/InstaProfilePic.png" 
+        WindowStartupLocation="CenterScreen">
     <Frame x:Name="frame">
-        <Frame.Source>/Login.xaml</Frame.Source>
+        <Frame.Source>/Pages/Login.xaml</Frame.Source>
     </Frame>
 
 </Window>

@@ -28,8 +28,11 @@ namespace WPFClient
 
         private void loginButton_Click(object sender, RoutedEventArgs e)
         {
-            NavigationService.Navigate(new Uri("Test.xaml", UriKind.Relative));
+            MainWindow.Username = userNameTextBox.Text;
+            MainWindow.Password = passwordBox.Password;
 
+            //ChatPage chatPage = new ChatPage();
+            //NavigationService.Navigate(chatPage);
         }
     }
 }

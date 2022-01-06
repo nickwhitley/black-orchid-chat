@@ -2,7 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -21,6 +23,10 @@ namespace WPFClient
     /// </summary>
     public partial class MainWindow : Window
     {
+        public static string Username { get; set; }
+        public static string Password { get; set; }
+        public static string StatusLabelText { get; set; }
+
         public MainWindow()
         {
             InitializeComponent();

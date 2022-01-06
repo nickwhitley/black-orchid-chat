@@ -8,6 +8,7 @@ namespace ConsoleClient
     class Program
     {
         public static HubConnection _connection = ConnectToServer(@"https://524a-2601-548-4100-c1f0-1c59-21c5-3394-f751.ngrok.io/chat");
+
         static void Main(string[] args)
         {
             try
