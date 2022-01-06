@@ -17,7 +17,8 @@ namespace WebServer.Hubs
 
         public ChatHub(IUserLogger userLogger)
         {
-            _userLogger = userLogger; 
+            _userLogger = userLogger;
+            Console.WriteLine("constructor used.");
         }
 
         public async Task ReceiveUserLoginInfo(string username, string password)
@@ -53,6 +54,7 @@ namespace WebServer.Hubs
 
         public async Task BroadcastUserMessage(string message)
         {
+            
             _userLogger.TempConnections.TryGetValue(Context.ConnectionId, out IUser user);
             string username = user.Username;
             string messageToSend = $"{username}: {message}";

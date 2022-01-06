@@ -21,7 +21,7 @@ namespace WebServer.ClientHandler
 
         public UserLogger()
         {
-
+            
         }
 
         public bool AuthenticateUser(IUser user)
