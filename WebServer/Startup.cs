@@ -30,7 +30,7 @@ namespace WebServer
         {
             services.AddSignalR();
             services.AddScoped<IUserLogger, UserLogger>();
-            services.AddTransient<ChatHub>();
+            
             
         }
 
@@ -38,9 +38,9 @@ namespace WebServer
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             
-            //GlobalHost.DependencyResolver.Register(
-            //    typeof(ChatHub),
-            //    () => new ChatHub(new UserLogger()));
+            GlobalHost.DependencyResolver.Register(
+                typeof(ChatHub),
+                () => new ChatHub(new UserLogger()));
 
             if (env.IsDevelopment())
             {

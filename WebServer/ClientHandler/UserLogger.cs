@@ -11,12 +11,12 @@ namespace WebServer.ClientHandler
 {
     public class UserLogger : IUserLogger
     {
-        private List<IUser> _users;
+        private List<IUser> _users = new List<IUser>();
         public List<IUser> Users { get => _users;  set => _users = LoadListFromCSV(); }
         
         public string FilePath => @"./Logs/UserLog.csv";
 
-        private Dictionary<string, IUser> _tempConnections;
+        private Dictionary<string, IUser> _tempConnections = new Dictionary<string, IUser>();
         public Dictionary<string, IUser> TempConnections { get => _tempConnections; }
 
         public UserLogger()

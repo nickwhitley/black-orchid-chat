@@ -18,11 +18,12 @@ namespace WebServer.Hubs
         public ChatHub(IUserLogger userLogger)
         {
             _userLogger = userLogger;
-            Console.WriteLine("constructor used.");
+            
         }
 
         public async Task ReceiveUserLoginInfo(string username, string password)
         {
+            Console.WriteLine(username + " " + password);
             IUser user = Factory.CreateUser(username, password);
             if (_userLogger.AuthenticateUser(user))
             {
@@ -73,12 +74,15 @@ namespace WebServer.Hubs
 
         public async override Task OnDisconnectedAsync(Exception exception)
         {
-            
-            if (_userLogger.TempConnections.TryGetValue(Context.ConnectionId, out IUser user))
+            if((_userLogger.TempConnections == null)) 
+            {
+                Console.WriteLine("Unkown Client disconnect.");
+                
+            } else if (_userLogger.TempConnections.TryGetValue(Context.ConnectionId, out IUser user))
             {
                 await Clients.All.SendAsync("ReceiveChatMessage", $"{ user.Username } has disconnected");
             }
-            Console.WriteLine("Unkown Client disconnect.");
+            
         }
 
 

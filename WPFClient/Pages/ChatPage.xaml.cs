@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.SignalR.Client;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,8 +21,10 @@ namespace WPFClient
     /// </summary>
     public partial class ChatPage : Page
     {
+        
         public ChatPage()
         {
+            
             InitializeComponent();
         }
     }
