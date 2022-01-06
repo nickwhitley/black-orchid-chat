@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.SignalR.Client;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -13,5 +14,14 @@ namespace WPFClient
     /// </summary>
     public partial class App : Application
     {
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            HubConnection connection = new HubConnectionBuilder()
+                .WithUrl(@"https://localhost:5001/chat")
+                .WithAutomaticReconnect()
+                .Build();
+
+            base.OnStartup(e);
+        }
     }
 }
