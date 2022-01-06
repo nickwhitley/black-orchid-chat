@@ -28,8 +28,12 @@ namespace WPFClient
 
         private void loginButton_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow.Username = userNameTextBox.Text;
-            MainWindow.Password = passwordBox.Password;
+            App._connection.InvokeCoreAsync("ReceiveUserLoginInfo",
+                                            args: new[] { userNameTextBox.Text, passwordBox.Password });
+            //App._connection.On("ReceiveChatMessage", (string message) =>
+            //{
+            //    WriteLine($"{ message }");
+            //});
 
             //ChatPage chatPage = new ChatPage();
             //NavigationService.Navigate(chatPage);
