@@ -9,17 +9,12 @@ namespace WebServer.Factories
 {
     public static class Factory
     {
-        public static IUser CreateUser(string username, string password)
+        public static IUser CreateUser(string username, string connectionId)
         {
             User user = new User();
             user.Username = username;
-            user.Password = password;
+            user.ConnectionId = connectionId;
             return user;
-        }
-
-        public static IUserLogger CreateUserLogger()
-        {
-            return new UserLogger();
         }
     }
 }
