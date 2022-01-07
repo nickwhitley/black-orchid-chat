@@ -21,17 +21,16 @@ namespace WebServer.Hubs
             
         }
 
-        public async Task ReceiveUserLoginInfo(string username, string password)
+        public async Task ReceiveUserLoginInfo(string username)
         {
-            Console.WriteLine(username + " " + password);
-            IUser user = Factory.CreateUser(username, password);
-            if (_userLogger.AuthenticateUser(user))
-            {
-                _userLogger.SaveUser(user);
-                _userLogger.AddConnection(Context.ConnectionId, user);
+            Console.WriteLine(username);
+            IUser user = Factory.CreateUser(username, Context.ConnectionId);
+            
+                _userLogger.AddUser(user);
+                
                 await BroadcastUserConnected(user.Username);
-                await BroadcastUserCount(_userLogger);
-            }
+                await BroadcastUserCount(_userLogger.NumberOfUsers());
+            
         }
 
         public async Task BroadcastUserConnected(string username)
@@ -40,23 +39,32 @@ namespace WebServer.Hubs
             await Clients.Caller.SendAsync("ReceiveChatMessage", "You have connected.");
         }
 
-        public async Task BroadcastUserCount(ITempConnections connections)
+        public async Task BroadcastUserCount(int numberOfUsers)
         {
-            if (connections.NumOfConnections() == 2)
+            if (numberOfUsers == 2)
             {
                 await Clients.Caller.SendAsync("ReceiveChatMessage", "There is 1 other user online.");
             }
             else
             {
-                await Clients.Caller.SendAsync("ReceiveChatMessage", $"There are {(connections.NumOfConnections()) - 1} other users online.");
+                await Clients.Caller.SendAsync("ReceiveChatMessage", $"There are {numberOfUsers - 1} other users online.");
             }
 
         }
 
         public async Task BroadcastUserMessage(string message)
         {
+            IUser user;
+            try
+            {
+                user = _userLogger.TryGetUser(Context.ConnectionId);
+            } catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                await Clients.Caller.SendAsync("ReceiveChatMessage", "An error occured, please try again");
+                return;
+            }
             
-            _userLogger.TempConnections.TryGetValue(Context.ConnectionId, out IUser user);
             string username = user.Username;
             string messageToSend = $"{username}: {message}";
 
@@ -74,107 +82,14 @@ namespace WebServer.Hubs
 
         public async override Task OnDisconnectedAsync(Exception exception)
         {
-            if((_userLogger.TempConnections == null)) 
-            {
-                Console.WriteLine("Unkown Client disconnect.");
-                
-            } else if (_userLogger.TempConnections.TryGetValue(Context.ConnectionId, out IUser user))
-            {
+            try{
+                IUser user = _userLogger.TryGetUser(Context.ConnectionId);
                 await Clients.All.SendAsync("ReceiveChatMessage", $"{ user.Username } has disconnected");
+            } catch (Exception ex)
+            {
+                Console.WriteLine("Unknown client disconnected.");
             }
             
         }
-
-
-
-        //public static Dictionary<string, string> connectionDictionary = new Dictionary<string, string>();
-
-
-        //private static Dictionary<string, string> passwordDictionary = new Dictionary<string, string>();
-
-
-        //public async Task ReceiveUserLoginInfo(string username, string password)
-        //{
-        //    IUser user = Factory.CreateUser(username, password);
-        //    if (!_userLogger.AuthenticateUser(user))
-        //    {
-
-        //    } else
-
-        //        _userLogger.SaveUser(Factory.CreateUser(username, password));
-        //        await BroadcastUserConnected(username);
-        //        await UserCountNotification();
-
-        //}
-
-        //public async Task RetreiveUsername(string username)
-        //{
-        //    await BroadcastUserConnected(username);
-        //    await UserCountNotification(); 
-        //}
-
-
-        //private void SaveUser(string username, string password)
-        //{
-        //    connectionDictionary.Add(Context.ConnectionId, username);
-        //    passwordDictionary.Add(username, password);
-        //}
-
-
-
-        //private bool AuthenticateUser(string username, string password)
-        //{
-        //    if (passwordDictionary.ContainsKey(username) && !passwordDictionary[username].Equals(password))
-        //    {
-        //        return false;
-        //    }
-        //    else if (!passwordDictionary.ContainsKey(username))
-        //    {
-        //        if (username.Length > 18 || password.Length > 14)
-        //        {
-
-        //            return false;
-        //        } else
-        //        {
-        //            SaveUser(username, password);
-        //            return true;
-        //        }
-        //    }
-        //    return true;
-        //}
-
-
-        //private async Task BroadcastUserConnected(string username)
-        //{
-        //    await Clients.AllExcept(Context.ConnectionId).SendAsync("ReceiveChatMessage", $"{username} has connected.");
-        //    await Clients.Caller.SendAsync("ReceiveChatMessage", "You have connected.");
-        //}
-
-
-        //private async Task UserCountNotification()
-        //{
-        //    if (connectionDictionary.Count == 2)
-        //    {
-        //        await Clients.Caller.SendAsync("ReceiveChatMessage", "There is 1 other user online.");
-        //    }
-        //    else
-        //    {
-        //        await Clients.Caller.SendAsync("ReceiveChatMessage", $"There are {(connectionDictionary.Count) - 1} other users online.");
-        //    }
-        //}
-
-
-        //public async Task SendChatMessage(string message)
-        //{
-        //    string username = connectionDictionary[Context.ConnectionId];
-        //    string messageToSend = $"{username}: {message}";
-
-        //    Console.WriteLine($"message received[{username}]");
-
-        //    await Clients.All.SendAsync("ReceiveChatMessage", messageToSend);
-        //}
-
-
-
     }
 }

@@ -12,90 +12,39 @@ namespace WebServer.ClientHandler
     public class UserLogger : IUserLogger
     {
         private List<IUser> _users = new List<IUser>();
-        public List<IUser> Users { get => _users;  set => _users = LoadListFromCSV(); }
+        public List<IUser> Users { get => _users; }
         
-        public string FilePath => @"./Logs/UserLog.csv";
-
-        private Dictionary<string, IUser> _tempConnections = new Dictionary<string, IUser>();
-        public Dictionary<string, IUser> TempConnections { get => _tempConnections; }
-
         public UserLogger()
         {
             
         }
 
-        public bool AuthenticateUser(IUser user)
+        public void AddUser(IUser user)
         {
-            
-            if (!Users.Contains(user))
-            {
-                return true;
-            } else if(Users.Any(u => (u.Username == user.Username) && (u.Password == user.Password)))
-            {
-                return true;
-            }
-            return false;
+            _users.Add(user);
         }
 
-        public List<IUser> LoadListFromCSV()
+        public void RemoveUser(IUser user)
         {
-            List<IUser> output = new();
-            IUser user;
-            var lines = File.ReadAllLines(FilePath).ToList();
+            _users.Remove(user);
+        }
 
-            //remove header
-            lines.RemoveAt(0);
-
-            foreach(string line in lines)
+        public IUser TryGetUser(string connectionId)
+        {
+            foreach (var user in Users)
             {
-                string[] values = line.Split(',');
-                user = Factory.CreateUser(values[0], values[1]);            
-
-                output.Add(user);
+                if(user.ConnectionId == connectionId)
+                {
+                    return user;
+                }
             }
 
-            return output;
+            throw new Exception(connectionId + " not found in list of users.");
         }
 
-        public void LoadUsers()
+        public int NumberOfUsers()
         {
-            Users = LoadListFromCSV();
+            return _users.Count;
         }
-
-        public void SaveListToCSV(List<IUser> users)
-        {
-            List<string> lines = new();
-            //add file header
-            lines.Add("Username,Password");
-            
-            foreach(var user in Users)
-            {
-                lines.Add($"{ user.Username },{ user.Password }");
-            }
-
-            File.WriteAllLines(FilePath, lines);
-        }
-
-        public void SaveUser(IUser user)
-        {
-            Users.Add(user);
-        }
-
-        public void AddConnection(string connectionId, IUser user)
-        {
-            _tempConnections.Add(connectionId, user);
-        }
-
-        public void RemoveConnection(string connectionId)
-        {
-            _tempConnections.Remove(connectionId);
-        }
-
-        public int NumOfConnections()
-        {
-            return _tempConnections.Count;
-        }
-
-       
     }
 }

@@ -7,12 +7,16 @@ using System.Threading.Tasks;
 
 namespace WebServer.Interfaces
 {
-    public interface IUserLogger : IUserAuthenticator, IFileProcessor, ITempConnections
+    public interface IUserLogger
     {
-        List<IUser> Users { get; set; }
+        List<IUser> Users { get; }
 
-        void SaveUser(IUser client);
+        void AddUser(IUser user);
 
-        void LoadUsers();
+        void RemoveUser(IUser user);
+
+        IUser TryGetUser(string connectionId);
+
+        int NumberOfUsers();
     }
 }
