@@ -11,10 +11,7 @@ namespace WebServer.Factories
     {
         public static IUser CreateUser(string username, string connectionId)
         {
-            User user = new User();
-            user.Username = username;
-            user.ConnectionId = connectionId;
-            return user;
+            return new User(username, connectionId);           
         }
     }
 }

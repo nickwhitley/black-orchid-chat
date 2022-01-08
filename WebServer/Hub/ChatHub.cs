@@ -21,7 +21,7 @@ namespace WebServer.Hubs
             
         }
 
-        public async Task ReceiveUserLoginInfo(string username)
+        public async Task ReceiveUsername(string username)
         {
             Console.WriteLine(username);
             IUser user = Factory.CreateUser(username, Context.ConnectionId);
@@ -29,7 +29,7 @@ namespace WebServer.Hubs
                 _userLogger.AddUser(user);
                 
                 await BroadcastUserConnected(user.Username);
-                await BroadcastUserCount(_userLogger.NumberOfUsers());
+                await BroadcastUserCount();
             
         }
 
@@ -39,8 +39,9 @@ namespace WebServer.Hubs
             await Clients.Caller.SendAsync("ReceiveChatMessage", "You have connected.");
         }
 
-        public async Task BroadcastUserCount(int numberOfUsers)
+        public async Task BroadcastUserCount()
         {
+            int numberOfUsers = _userLogger.NumberOfUsers();
             if (numberOfUsers == 2)
             {
                 await Clients.Caller.SendAsync("ReceiveChatMessage", "There is 1 other user online.");
