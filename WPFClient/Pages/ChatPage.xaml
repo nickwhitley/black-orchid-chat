@@ -9,5 +9,46 @@
       Title="Chat">
 
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="3*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="0" 
+                    Background="#FF221F1F">
+            <Image Source="\Media\BlackOrchidLogoBlueResized.png"/>
+            <Label Content="Current Users"
+                   HorizontalContentAlignment="Center" Foreground="#FFF8F5F5"/>
+            <ListView x:Name="UsersListView"
+                      Height="Auto" 
+                      Background="#FF272525" BorderBrush="{x:Null}"/>
+        </StackPanel>
+
+        <Grid Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="9*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="20*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <TextBlock x:Name="MessagesTextBlock"
+                       Grid.Column="0" 
+                       Grid.Row="0"
+                       Grid.ColumnSpan="2"
+                       Background="#FF1A1818" 
+                       Foreground="#FFFCFAFA"
+                       Margin="5"/>
+            <TextBox x:Name="MessageInputTextBox"
+                     Grid.Column="0"
+                     Grid.Row="1"
+                     Margin="2"/>
+            <Button x:Name="SubmitMessageButton"
+                    Grid.Column="1"
+                    Grid.Row="1"
+                    Content="Submit"
+                    Margin="2"
+                    Click="SubmitMessageButton_Click"/>
+        </Grid>
     </Grid>
 </Page>
