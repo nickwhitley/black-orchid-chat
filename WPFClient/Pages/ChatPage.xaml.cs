@@ -27,5 +27,10 @@ namespace WPFClient
             
             InitializeComponent();
         }
+
+        private void SubmitMessageButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
