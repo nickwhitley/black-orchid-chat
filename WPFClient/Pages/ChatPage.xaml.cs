@@ -30,7 +30,7 @@ namespace WPFClient
 
         private void SubmitMessageButton_Click(object sender, RoutedEventArgs e)
         {
-
+            
         }
     }
 }

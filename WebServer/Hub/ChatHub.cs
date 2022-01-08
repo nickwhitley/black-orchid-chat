@@ -23,13 +23,13 @@ namespace WebServer.Hubs
 
         public async Task ReceiveUsername(string username)
         {
-            Console.WriteLine(username);
+            Console.WriteLine($"User connected: {username} {Context.ConnectionId}");
             IUser user = Factory.CreateUser(username, Context.ConnectionId);
             
-                _userLogger.AddUser(user);
+            _userLogger.AddUser(user);
                 
-                await BroadcastUserConnected(user.Username);
-                await BroadcastUserCount();
+            await BroadcastUserConnected(user.Username);
+            await BroadcastUserCount();
             
         }
 
@@ -85,9 +85,11 @@ namespace WebServer.Hubs
         {
             try{
                 IUser user = _userLogger.TryGetUser(Context.ConnectionId);
+                Console.WriteLine($"{user.Username} has disconnected.");
                 await Clients.All.SendAsync("ReceiveChatMessage", $"{ user.Username } has disconnected");
             } catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
                 Console.WriteLine("Unknown client disconnected.");
             }
             

@@ -11,8 +11,7 @@ namespace WebServer.ClientHandler
 {
     public class UserLogger : IUserLogger
     {
-        private List<IUser> _users = new List<IUser>();
-        public List<IUser> Users { get => _users; }
+        private List<IUser> users = new List<IUser>();
         
         public UserLogger()
         {
@@ -21,17 +20,19 @@ namespace WebServer.ClientHandler
 
         public void AddUser(IUser user)
         {
-            _users.Add(user);
+            users.Add(user);
+            
         }
 
         public void RemoveUser(IUser user)
         {
-            _users.Remove(user);
+            users.Remove(user);
+            
         }
 
         public IUser TryGetUser(string connectionId)
         {
-            foreach (var user in Users)
+            foreach (var user in users)
             {
                 if(user.ConnectionId == connectionId)
                 {
@@ -44,7 +45,7 @@ namespace WebServer.ClientHandler
 
         public int NumberOfUsers()
         {
-            return _users.Count;
+            return users.Count;
         }
     }
 }

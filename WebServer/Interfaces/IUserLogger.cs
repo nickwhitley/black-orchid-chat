@@ -9,7 +9,6 @@ namespace WebServer.Interfaces
 {
     public interface IUserLogger
     {
-        List<IUser> Users { get; }
 
         void AddUser(IUser user);
 
