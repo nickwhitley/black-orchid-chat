@@ -33,6 +33,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <TextBlock x:Name="MessagesTextBlock"
+                       Text="{Binding Message, Mode=OneWay}"
                        Grid.Column="0" 
                        Grid.Row="0"
                        Grid.ColumnSpan="2"
