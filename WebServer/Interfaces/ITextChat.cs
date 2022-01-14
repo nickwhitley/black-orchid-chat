@@ -7,8 +7,8 @@ namespace WebServer.Interfaces
 {
     public interface ITextChat
     {
-        Task ReceiveUserLoginInfo(string username, string password);
-        Task BroadcastUserCount(ITempConnections connections);
+        Task ReceiveUsername(string username);
+        Task BroadcastUserCount();
         Task BroadcastUserConnected(string username);
         Task BroadcastUserMessage(string message);
     }

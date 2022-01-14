@@ -22,14 +22,18 @@ namespace WPFClient
     /// </summary>
     public partial class ChatPage : Page
     {
+
         BindingList<string> messages = new BindingList<string>();
+
         public ChatPage()
         {
+            
             InitializeComponent();
         }
 
         private void SubmitMessageButton_Click(object sender, RoutedEventArgs e)
         {
+
             App._connection.InvokeCoreAsync("BroadcastUserMessage", args: new[] { MessageInputTextBox.Text });
 
             App._connection.On("ReceiveChatMessage", (string newMessage) =>

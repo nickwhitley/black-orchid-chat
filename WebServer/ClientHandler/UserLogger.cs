@@ -11,91 +11,41 @@ namespace WebServer.ClientHandler
 {
     public class UserLogger : IUserLogger
     {
-        private List<IUser> _users;
-        public List<IUser> Users { get => _users;  set => _users = LoadListFromCSV(); }
+        private List<IUser> users = new List<IUser>();
         
-        public string FilePath => @"./Logs/UserLog.csv";
-
-        private Dictionary<string, IUser> _tempConnections;
-        public Dictionary<string, IUser> TempConnections { get => _tempConnections; }
-
         public UserLogger()
         {
             
         }
 
-        public bool AuthenticateUser(IUser user)
+        public void AddUser(IUser user)
         {
+            users.Add(user);
             
-            if (!Users.Contains(user))
-            {
-                return true;
-            } else if(Users.Any(u => (u.Username == user.Username) && (u.Password == user.Password)))
-            {
-                return true;
-            }
-            return false;
         }
 
-        public List<IUser> LoadListFromCSV()
+        public void RemoveUser(IUser user)
         {
-            List<IUser> output = new();
-            IUser user;
-            var lines = File.ReadAllLines(FilePath).ToList();
-
-            //remove header
-            lines.RemoveAt(0);
-
-            foreach(string line in lines)
-            {
-                string[] values = line.Split(',');
-                user = Factory.CreateUser(values[0], values[1]);            
-
-                output.Add(user);
-            }
-
-            return output;
-        }
-
-        public void LoadUsers()
-        {
-            Users = LoadListFromCSV();
-        }
-
-        public void SaveListToCSV(List<IUser> users)
-        {
-            List<string> lines = new();
-            //add file header
-            lines.Add("Username,Password");
+            users.Remove(user);
             
-            foreach(var user in Users)
+        }
+
+        public IUser TryGetUser(string connectionId)
+        {
+            foreach (var user in users)
             {
-                lines.Add($"{ user.Username },{ user.Password }");
+                if(user.ConnectionId == connectionId)
+                {
+                    return user;
+                }
             }
 
-            File.WriteAllLines(FilePath, lines);
+            throw new Exception(connectionId + " not found in list of users.");
         }
 
-        public void SaveUser(IUser user)
+        public int NumberOfUsers()
         {
-            Users.Add(user);
+            return users.Count;
         }
-
-        public void AddConnection(string connectionId, IUser user)
-        {
-            _tempConnections.Add(connectionId, user);
-        }
-
-        public void RemoveConnection(string connectionId)
-        {
-            _tempConnections.Remove(connectionId);
-        }
-
-        public int NumOfConnections()
-        {
-            return _tempConnections.Count;
-        }
-
-       
     }
 }
