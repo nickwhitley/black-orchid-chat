@@ -32,15 +32,21 @@ namespace WebServer.ClientHandler
 
         public IUser TryGetUser(string connectionId)
         {
-            foreach (var user in users)
-            {
-                if(user.ConnectionId == connectionId)
-                {
-                    return user;
-                }
-            }
+            //foreach (var user in users)
+            //{
+            //    if(user.ConnectionId == connectionId)
+            //    {
+            //        return user;
+            //    }
+            //}
 
-            throw new Exception(connectionId + " not found in list of users.");
+            var user = users.First(c => c.ConnectionId == connectionId);
+            if(user == null)
+            {
+                throw new Exception(connectionId + " not found in list of users.");
+            }
+            return user;
+
         }
 
         public int NumberOfUsers()
