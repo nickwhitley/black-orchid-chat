@@ -28,7 +28,7 @@ namespace WPFClient
 
         private void loginButton_Click(object sender, RoutedEventArgs e)
         {
-            App._connection.InvokeCoreAsync("ReceiveUserLoginInfo",
+            App._connection.InvokeCoreAsync("ReceiveUsername",
                                             args: new[] { userNameTextBox.Text });
             //App._connection.On("ReceiveChatMessage", (string message) =>
             //{
