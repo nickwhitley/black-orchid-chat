@@ -20,16 +20,9 @@ namespace WPFClient
     /// <summary>
     /// Interaction logic for Test.xaml
     /// </summary>
-    public partial class ChatPage : Page, INotifyPropertyChanged
+    public partial class ChatPage : Page
     {
-        private string message = String.Empty;
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public string Message
-        {
-            get { return message; }
-        }
+        BindingList<string> messages = new BindingList<string>();
         public ChatPage()
         {
             InitializeComponent();
@@ -41,8 +34,7 @@ namespace WPFClient
 
             App._connection.On("ReceiveChatMessage", (string newMessage) =>
             {
-                message += newMessage + Environment.NewLine;
-                PropertyChanged("Message");
+                messages.Add(newMessage);
             });
         }
 
