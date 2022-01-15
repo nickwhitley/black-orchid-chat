@@ -33,7 +33,8 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <ListBox x:Name="MessagesListBox"
-                       ItemsSource="{Binding messages}"
+                       ItemsSource="{Binding Messages}"
+                       
                        Grid.Column="0" 
                        Grid.Row="0"
                        Grid.ColumnSpan="2"

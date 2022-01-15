@@ -29,6 +29,7 @@ namespace WPFClient
         public MainWindow()
         {
             InitializeComponent();
+            this.DataContext = this;
         }
     }
 }
