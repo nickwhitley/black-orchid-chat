@@ -18,7 +18,7 @@ namespace WPFClient
         protected override void OnStartup(StartupEventArgs e)
         {
             HubConnection connection = new HubConnectionBuilder()
-                .WithUrl(@"http://localhost:5000/chat")
+                .WithUrl(@"https://7cca-2601-548-4100-c1f0-74e2-cddd-8818-d29a.ngrok.io/chat")
                 .WithAutomaticReconnect()
                 .Build();
 

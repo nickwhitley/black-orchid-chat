@@ -55,7 +55,7 @@ namespace WPFClient
         {
             App._connection.On("ReceiveChatMessage", (string newMessage) =>
             {
-                Messages.Add(newMessage);
+                Messages.Add(newMessage + "\n");
 
             });
         }

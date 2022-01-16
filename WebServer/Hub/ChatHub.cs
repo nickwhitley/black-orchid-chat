@@ -85,6 +85,7 @@ namespace WebServer.Hubs
         {
             try{
                 IUser user = _userLogger.TryGetUser(Context.ConnectionId);
+                _userLogger.RemoveUser(user);
                 Console.WriteLine($"{user.Username} has disconnected.");
                 await Clients.All.SendAsync("ReceiveChatMessage", $"{ user.Username } has disconnected");
             } catch (Exception ex)
