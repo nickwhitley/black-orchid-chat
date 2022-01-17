@@ -35,7 +35,6 @@ namespace WPFClient
 
         public ChatPage()
         {
-            Messages.Add("TestMessage");
             InitializeComponent();
             //DataContext = this;
             MessagesListBox.ItemsSource = Messages;
@@ -55,7 +54,7 @@ namespace WPFClient
         {
             App._connection.On("ReceiveChatMessage", (string newMessage) =>
             {
-                Messages.Add(newMessage + "\n");
+                Messages.Add(newMessage);
 
             });
         }

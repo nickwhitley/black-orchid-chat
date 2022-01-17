@@ -48,7 +48,7 @@ namespace WebServer.Hubs
             }
             else
             {
-                await Clients.Caller.SendAsync("ReceiveChatMessage", $"There are {numberOfUsers - 1} other users online.");
+                await Clients.Caller.SendAsync("ReceiveChatMessage", $"There are {numberOfUsers - 1} other Users online.");
             }
 
         }
@@ -72,6 +72,11 @@ namespace WebServer.Hubs
             Console.WriteLine($"message received[{username}]");
 
             await Clients.All.SendAsync("ReceiveChatMessage", messageToSend);
+        }
+
+        public async Task UpdateClientUsersOnlineList()
+        {
+            var userList = _userLogger.
         }
 
         public override Task OnConnectedAsync()
