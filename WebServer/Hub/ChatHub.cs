@@ -2,10 +2,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using WebServer.ClientHandler;
 using WebServer.Factories;
 using WebServer.Interfaces;
+
 
 namespace WebServer.Hubs
 {
@@ -30,7 +33,8 @@ namespace WebServer.Hubs
                 
             await BroadcastUserConnected(user.Username);
             await BroadcastUserCount();
-            
+            await UpdateClientUsersOnlineList();
+
         }
 
         public async Task BroadcastUserConnected(string username)
@@ -76,7 +80,34 @@ namespace WebServer.Hubs
 
         public async Task UpdateClientUsersOnlineList()
         {
-            var userList = _userLogger.
+            var userList = _userLogger.GetAllUsers();
+            await Clients.All.SendAsync("UpdateUsersList", userList);
+        }
+
+        public async Task DisplayUserIsTypingEvent(Dictionary<string, object> changesData)
+        {
+            //changesData contains: Offest, AddedLength, RemovedLength as keys.
+            changesData.TryGetValue("Offset", out var offset);
+            changesData.TryGetValue("AddedLength", out var addedLength);
+            changesData.TryGetValue("RemovedLength", out var removedLength);
+
+            int offsetConverted = int.Parse(offset.ToString());
+            int addedLengthConverted = int.Parse(addedLength.ToString());
+            int removedLengthConverted = int.Parse(removedLength.ToString());
+
+            var caller = _userLogger.TryGetUser(Context.ConnectionId).Username;
+            string message = $"{ caller } is typing...";
+
+            if (offsetConverted == 0 && addedLengthConverted == 1)
+            {
+                
+                await Clients.AllExcept(Context.ConnectionId).SendAsync("DisplayUserIsTyping", message);
+            }
+
+            if(offsetConverted == 0 && removedLengthConverted == 1) 
+            {
+                await Clients.AllExcept(Context.ConnectionId).SendAsync("StopDisplayUserTyping", message);
+            }
         }
 
         public override Task OnConnectedAsync()
@@ -93,6 +124,7 @@ namespace WebServer.Hubs
                 _userLogger.RemoveUser(user);
                 Console.WriteLine($"{user.Username} has disconnected.");
                 await Clients.All.SendAsync("ReceiveChatMessage", $"{ user.Username } has disconnected");
+                await UpdateClientUsersOnlineList();
             } catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);

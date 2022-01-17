@@ -39,6 +39,8 @@ namespace WPFClient
             //DataContext = this;
             MessagesListBox.ItemsSource = Messages;
             new Thread(ReceiveChatMessage).Start();
+            new Thread(DisplayUserIsTyping).Start();
+            new Thread(StopDisplayUserTyping).Start();
             
         }
 
@@ -47,7 +49,6 @@ namespace WPFClient
             
             App._connection.InvokeCoreAsync("BroadcastUserMessage", args: new[] { MessageInputTextBox.Text });
             
-
         }
 
         public void ReceiveChatMessage()
@@ -57,6 +58,34 @@ namespace WPFClient
                 Messages.Add(newMessage);
 
             });
+        }
+
+        public void DisplayUserIsTyping()
+        {
+            App._connection.On("DisplayUserIsTyping", (string userTypingMessage) =>
+            {
+                Messages.Add(userTypingMessage);
+            });
+        }
+
+        public void StopDisplayUserTyping()
+        {
+            App._connection.On("StopDisplayUserTyping", (string messageToRemove) =>
+            {
+                Messages.Remove(messageToRemove);
+            });
+        }
+
+        private void MessageInputTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            Dictionary<string, object> changesData = new Dictionary<string, object>();
+            changesData.Add("Offset", e.Changes.First().Offset);
+            changesData.Add("AddedLength", e.Changes.First().AddedLength);
+            changesData.Add("RemovedLength", e.Changes.First().RemovedLength);
+            
+            App._connection.InvokeCoreAsync("DisplayUserIsTypingEvent", args: new[] { changesData });
+
+
         }
     }
 }

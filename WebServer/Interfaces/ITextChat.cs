@@ -9,6 +9,8 @@ namespace WebServer.Interfaces
     {
         Task ReceiveUsername(string username);
         Task BroadcastUserCount();
+        Task DisplayUserIsTypingEvent(Dictionary<string, object> changesData);
+
         Task BroadcastUserConnected(string username);
         Task BroadcastUserMessage(string message);
     }

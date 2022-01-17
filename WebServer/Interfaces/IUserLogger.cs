@@ -14,6 +14,8 @@ namespace WebServer.Interfaces
 
         void RemoveUser(IUser user);
 
+        List<IUser> GetAllUsers();
+
         IUser TryGetUser(string connectionId);
 
         int NumberOfUsers();
