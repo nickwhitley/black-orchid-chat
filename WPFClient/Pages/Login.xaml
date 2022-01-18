@@ -6,7 +6,8 @@
       xmlns:local="clr-namespace:WPFClient"
       Title="Login"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800">
+      d:DesignHeight="450" d:DesignWidth="800"
+      ShowsNavigationUI="False">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -34,7 +35,10 @@
                  HorizontalContentAlignment="Center"
                  HorizontalAlignment="Center"
                  VerticalAlignment="Center"
-                 TabIndex="0" Grid.Column="1" Margin="0,5,0,0" Grid.Row="1" ForceCursor="True"/>
+                 TabIndex="0" Grid.Column="1" Margin="0,5,0,0" Grid.Row="1" 
+                 KeyDown="userNameTextBox_KeyDown"
+                 Initialized="userNameTextBox_Initialized"
+                 MaxLength="20"/>
             <Button x:Name="loginButton"
                 VerticalAlignment="Bottom"
                 Margin="0,25,0,0"

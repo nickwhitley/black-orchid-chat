@@ -38,5 +38,23 @@ namespace WPFClient
             ChatPage chatPage = new ChatPage();
             NavigationService.Navigate(chatPage);
         }
+
+        private void userNameTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                App._connection.InvokeCoreAsync("ReceiveUsername",
+                                            args: new[] { userNameTextBox.Text });
+
+
+                ChatPage chatPage = new ChatPage();
+                NavigationService.Navigate(chatPage);
+            }
+        }
+
+        private void userNameTextBox_Initialized(object sender, EventArgs e)
+        {
+            userNameTextBox.Focus();
+        }
     }
 }
