@@ -11,8 +11,7 @@
         Background="#23272a" Icon="/Media/InstaProfilePic.png" 
         WindowStartupLocation="CenterScreen"
         MinHeight="542"
-        MinWidth="847"
-        WindowState="Maximized">
+        MinWidth="847">
     <Frame x:Name="frame">
         <Frame.Source>/Pages/Login.xaml</Frame.Source>
     </Frame>
