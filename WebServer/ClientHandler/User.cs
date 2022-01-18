@@ -15,9 +15,6 @@ namespace WebServer.ClientHandler
         {
             Username = username;
             ConnectionId = connectionId;
-        }
-        
-
-        
+        }        
     }
 }

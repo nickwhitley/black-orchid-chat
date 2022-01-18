@@ -37,14 +37,6 @@ namespace WebServer.ClientHandler
 
         public IUser TryGetUser(string connectionId)
         {
-            //foreach (var user in Users)
-            //{
-            //    if(user.ConnectionId == connectionId)
-            //    {
-            //        return user;
-            //    }
-            //}
-
             var user = Users.First(c => c.ConnectionId == connectionId);
             if(user == null)
             {

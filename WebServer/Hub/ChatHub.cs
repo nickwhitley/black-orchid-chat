@@ -86,28 +86,38 @@ namespace WebServer.Hubs
 
         public async Task DisplayUserIsTypingEvent(Dictionary<string, object> changesData)
         {
-            //changesData contains: Offest, AddedLength, RemovedLength as keys.
-            changesData.TryGetValue("Offset", out var offset);
-            changesData.TryGetValue("AddedLength", out var addedLength);
-            changesData.TryGetValue("RemovedLength", out var removedLength);
+            //offset is the number of characters that the cursor sits from the first input position
+            int offset = GetTypingEventData(changesData)[1];
+            //added/removed length is the number of characater that have been added/removed when the change event occurs, usually '1'.
+            int addedLength = GetTypingEventData(changesData)[2];
+            int removedLength = GetTypingEventData(changesData)[3];
+            
+            var callerUsername = _userLogger.TryGetUser(Context.ConnectionId).Username;
+            string message = $"{ callerUsername } is typing...";
+
+            if (offset == 0 && addedLength == 1)
+            {
+                await Clients.AllExcept(Context.ConnectionId).SendAsync("DisplayUserIsTyping", message);
+            }
+
+            if(offset == 0 && removedLength == 1) 
+            {
+                await Clients.AllExcept(Context.ConnectionId).SendAsync("StopDisplayUserTyping", message);
+            }
+        }
+
+        private int[] GetTypingEventData(Dictionary<string, object> data)
+        {
+            data.TryGetValue("Offset", out var offset);
+            data.TryGetValue("AddedLength", out var addedLength);
+            data.TryGetValue("RemovedLength", out var removedLength);
 
             int offsetConverted = int.Parse(offset.ToString());
             int addedLengthConverted = int.Parse(addedLength.ToString());
             int removedLengthConverted = int.Parse(removedLength.ToString());
 
-            var caller = _userLogger.TryGetUser(Context.ConnectionId).Username;
-            string message = $"{ caller } is typing...";
-
-            if (offsetConverted == 0 && addedLengthConverted == 1)
-            {
-                
-                await Clients.AllExcept(Context.ConnectionId).SendAsync("DisplayUserIsTyping", message);
-            }
-
-            if(offsetConverted == 0 && removedLengthConverted == 1) 
-            {
-                await Clients.AllExcept(Context.ConnectionId).SendAsync("StopDisplayUserTyping", message);
-            }
+            int[] returnData = new[] { offsetConverted, addedLengthConverted, removedLengthConverted };
+            return returnData;
         }
 
         public override Task OnConnectedAsync()
