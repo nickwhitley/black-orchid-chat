@@ -1,52 +1,51 @@
 ﻿using Microsoft.AspNetCore.SignalR.Client;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace WPFClient
 {
-    /// <summary>
-    /// Interaction logic for Login.xaml
-    /// </summary>
     public partial class Login : Page
     {
         public Login()
-        {               
+        {
             InitializeComponent();
         }
 
         private void loginButton_Click(object sender, RoutedEventArgs e)
         {
-            App._connection.InvokeCoreAsync("ReceiveUsername",
-                                            args: new[] { userNameTextBox.Text });
+            if (userNameTextBox.Text != "")
+            {
+                App._connection.InvokeCoreAsync("ReceiveUsername",
+                                        args: new[] { userNameTextBox.Text });
 
-            ChatPage chatPage = new ChatPage();
-            NavigationService.Navigate(chatPage);
+                ChatPage chatPage = new ChatPage();
+                NavigationService.Navigate(chatPage);
+            }
+            else
+            {
+                usernameLabel.Content = "Cannot be blank, idiot";
+            }
         }
 
         private void userNameTextBox_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
             {
-                App._connection.InvokeCoreAsync("ReceiveUsername",
+                if (userNameTextBox.Text != "")
+                {
+                    App._connection.InvokeCoreAsync("ReceiveUsername",
                                             args: new[] { userNameTextBox.Text });
 
-                ChatPage chatPage = new ChatPage();
-                NavigationService.Navigate(chatPage);
+                    ChatPage chatPage = new ChatPage();
+                    NavigationService.Navigate(chatPage);
+                }
+                else
+                {
+                    usernameLabel.Content = "Cannot be blank, idiot";
+                }
             }
         }
 
@@ -54,11 +53,10 @@ namespace WPFClient
         {
             userNameTextBox.Focus();
         }
-        //public void DisplayConnectionStatus()
-        //{
-        //    StatusLabelText = App._connection.State.ToString();
-        //    statusLabel.Content = StatusLabelText;
-        //}
 
+        private void userNameTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            usernameLabel.Content = string.Empty;
+        }
     }
 }
