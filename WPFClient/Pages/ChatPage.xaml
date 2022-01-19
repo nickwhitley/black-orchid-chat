@@ -8,7 +8,7 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="Chat"
       ShowsNavigationUI="False">
-    
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -19,9 +19,14 @@
             <Image Source="\Media\BlackOrchidLogoBlueResized.png"/>
             <Label Content="Current Users"
                    HorizontalContentAlignment="Center" Foreground="#FFF8F5F5"/>
-            <ListView x:Name="UsersListView"
+            <ListView x:Name="usersListView"
                       Height="Auto"
-                      Background="#FF272525" BorderBrush="{x:Null}" Foreground="#FFF8F2F2"/>
+                      Background="#FF272525" BorderBrush="{x:Null}" Foreground="#FFF8F2F2">
+                <ListViewItem>
+                    <Label/>
+                </ListViewItem>
+            </ListView>
+
         </StackPanel>
 
         <Grid Grid.Column="1">
@@ -53,6 +58,7 @@
                      TextChanged="MessageInputTextBox_TextChanged"
                      Focusable="True" 
                      TabIndex="0"
+                     MaxLength="1500"
                      Initialized="MessageInputTextBox_Initialized"/>
         </Grid>
     </Grid>
