@@ -53,6 +53,7 @@
                      TextChanged="MessageInputTextBox_TextChanged"
                      Focusable="True" 
                      TabIndex="0"
+                     MaxLength="1500"
                      Initialized="MessageInputTextBox_Initialized"/>
         </Grid>
     </Grid>

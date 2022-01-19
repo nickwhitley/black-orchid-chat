@@ -1,8 +1,11 @@
 ﻿using Microsoft.AspNetCore.SignalR.Client;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -21,19 +24,18 @@ namespace WPFClient
     /// </summary>
     public partial class Login : Page
     {
+        //public string StatusLabelText { get; set; }
         public Login()
         {
             InitializeComponent();
+            //new Thread(DisplayConnectionStatus).Start();
+
         }
 
         private void loginButton_Click(object sender, RoutedEventArgs e)
         {
             App._connection.InvokeCoreAsync("ReceiveUsername",
                                             args: new[] { userNameTextBox.Text });
-            //App._connection.On("ReceiveChatMessage", (string message) =>
-            //{
-            //    WriteLine($"{ message }");
-            //});
 
             ChatPage chatPage = new ChatPage();
             NavigationService.Navigate(chatPage);
@@ -46,7 +48,6 @@ namespace WPFClient
                 App._connection.InvokeCoreAsync("ReceiveUsername",
                                             args: new[] { userNameTextBox.Text });
 
-
                 ChatPage chatPage = new ChatPage();
                 NavigationService.Navigate(chatPage);
             }
@@ -56,5 +57,11 @@ namespace WPFClient
         {
             userNameTextBox.Focus();
         }
+        //public void DisplayConnectionStatus()
+        //{
+        //    StatusLabelText = App._connection.State.ToString();
+        //    statusLabel.Content = StatusLabelText;
+        //}
+
     }
 }

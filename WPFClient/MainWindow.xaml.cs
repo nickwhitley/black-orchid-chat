@@ -24,12 +24,12 @@ namespace WPFClient
     public partial class MainWindow : Window
     {
         public static string Username { get; set; }
-        public static string StatusLabelText { get; set; }
 
         public MainWindow()
         {
             InitializeComponent();
             this.DataContext = this;
+            
         }
     }
 }

@@ -47,7 +47,6 @@
                 Background="#FF99AAB5"
                 Click="loginButton_Click"/>
             <Label x:Name="statusLabel"
-                   Content="{Binding Source={x:Static local:MainWindow.StatusLabelText} }"
                    Margin="0,40,0,0" Foreground="#FFF10F0F"
                    HorizontalContentAlignment="Center" Grid.Row="1" Grid.ColumnSpan="2"/>
         </StackPanel>
