@@ -80,17 +80,17 @@ namespace WebServer.Hubs
 
         public async Task UpdateClientUsersOnlineList()
         {
-            var userList = _userLogger.GetAllUsers();
+            var userList = _userLogger.GetAllUsernames();
             await Clients.All.SendAsync("UpdateUsersList", userList);
         }
 
         public async Task DisplayUserIsTypingEvent(Dictionary<string, object> changesData)
         {
             //offset is the number of characters that the cursor sits from the first input position
-            int offset = GetTypingEventData(changesData)[1];
+            int offset = GetTypingEventData(changesData)[0];
             //added/removed length is the number of characater that have been added/removed when the change event occurs, usually '1'.
-            int addedLength = GetTypingEventData(changesData)[2];
-            int removedLength = GetTypingEventData(changesData)[3];
+            int addedLength = GetTypingEventData(changesData)[1];
+            int removedLength = GetTypingEventData(changesData)[2];
             
             var callerUsername = _userLogger.TryGetUser(Context.ConnectionId).Username;
             string message = $"{ callerUsername } is typing...";

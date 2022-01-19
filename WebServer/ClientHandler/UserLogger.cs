@@ -46,6 +46,16 @@ namespace WebServer.ClientHandler
 
         }
 
+        public List<string> GetAllUsernames()
+        {
+            var usernames = new List<string>();
+            foreach(var user in Users)
+            {
+                usernames.Add(user.Username);
+            }
+            return usernames;
+        }
+
         public int NumberOfUsers()
         {
             return Users.Count;
