@@ -24,12 +24,9 @@ namespace WPFClient
     /// </summary>
     public partial class Login : Page
     {
-        //public string StatusLabelText { get; set; }
         public Login()
-        {
+        {               
             InitializeComponent();
-            //new Thread(DisplayConnectionStatus).Start();
-
         }
 
         private void loginButton_Click(object sender, RoutedEventArgs e)
