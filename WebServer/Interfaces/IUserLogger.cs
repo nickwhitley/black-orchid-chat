@@ -16,6 +16,8 @@ namespace WebServer.Interfaces
 
         List<IUser> GetAllUsers();
 
+        List<string> GetAllUsernames();
+
         IUser TryGetUser(string connectionId);
 
         int NumberOfUsers();
