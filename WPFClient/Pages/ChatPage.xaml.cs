@@ -34,6 +34,7 @@ namespace WPFClient
             {
                 Messages.Add(newMessage);
             });
+
         }
 
         public void DisplayUserIsTyping()
