@@ -22,9 +22,6 @@
             <ListView x:Name="usersListView"
                       Height="Auto"
                       Background="#FF272525" BorderBrush="{x:Null}" Foreground="#FFF8F2F2">
-                <ListViewItem>
-                    <Label/>
-                </ListViewItem>
             </ListView>
 
         </StackPanel>
@@ -35,7 +32,7 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="14*"/>
+                <RowDefinition Height="12*"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <ListView x:Name="MessagesListView"
@@ -50,10 +47,12 @@
             </ListView>
             <TextBox x:Name="MessageInputTextBox"
                      FontSize="17"
+                     VerticalContentAlignment="Center"
                      TextWrapping="Wrap"
                      Grid.Column="0"
                      Grid.Row="1"
-                     Margin="2"
+                     Grid.ColumnSpan="2"
+                     Margin="5,1,5,5"
                      KeyDown="MessageInputTextBox_KeyDown"
                      TextChanged="MessageInputTextBox_TextChanged"
                      Focusable="True" 
