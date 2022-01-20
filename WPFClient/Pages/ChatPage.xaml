@@ -22,9 +22,7 @@
             <ListView x:Name="usersListView"
                       Height="Auto"
                       Background="#FF272525" BorderBrush="{x:Null}" Foreground="#FFF8F2F2">
-                <ListViewItem>
-                    <Label/>
-                </ListViewItem>
+                
             </ListView>
 
         </StackPanel>
