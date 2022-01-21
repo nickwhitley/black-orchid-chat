@@ -9,7 +9,7 @@ namespace WPFClient
         protected override void OnStartup(StartupEventArgs e)
         {
             HubConnection connection = new HubConnectionBuilder()
-                .WithUrl(@"https://BlackOrchidChat.azurewebsites.net/chat")
+                .WithUrl(@"https://blackorchidchat.azurewebsites.net/chat")
                 .Build();
 
             connection.StartAsync();

@@ -95,12 +95,12 @@ namespace WebServer.Hubs
             var callerUsername = _userLogger.TryGetUser(Context.ConnectionId).Username;
             string message = $"{ callerUsername } is typing...";
 
-            if (offset == 0 && addedLength == 1)
+            if (offset == 0 && addedLength >= 1)
             {
                 await Clients.AllExcept(Context.ConnectionId).SendAsync("DisplayUserIsTyping", message);
             }
 
-            if(offset == 0 && removedLength == 1) 
+            if(offset == 0 && removedLength >= 1) 
             {
                 await Clients.AllExcept(Context.ConnectionId).SendAsync("StopDisplayUserTyping", message);
             }
