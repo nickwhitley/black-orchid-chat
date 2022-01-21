@@ -17,13 +17,27 @@
         <StackPanel Grid.Column="0" 
                     Background="#FF221F1F">
             <Image Source="\Media\BlackOrchidLogoBlueResized.png"/>
-            <Label Content="Current Users"
-                   HorizontalContentAlignment="Center" Foreground="#FFF8F5F5"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Label Content="Current Users"
+                   Grid.Column="0"
+                   HorizontalContentAlignment="Center" 
+                   HorizontalAlignment="Right"
+                   Foreground="#FFF8F5F5"/>
+                <Label Content="{Binding Source={x:Static local:ChatPage.NumberOfUsers}}"
+                   Grid.Column="1"
+                   HorizontalContentAlignment="Center" 
+                   HorizontalAlignment="Left"
+                   Foreground="#FFF8F5F5"/>
+            </Grid>
             <ListView x:Name="usersListView"
                       Height="Auto"
                       Background="#FF272525" BorderBrush="{x:Null}" Foreground="#FFF8F2F2">
             </ListView>
-
+            
         </StackPanel>
 
         <Grid Grid.Column="1">

@@ -1,14 +1,14 @@
 ﻿using Microsoft.AspNetCore.SignalR.Client;
+using System.Threading;
 using System.Windows;
 
 namespace WPFClient
 {
     public partial class MainWindow : Window
     {
-        public static string Username { get; set; }
-        private static HubConnectionState _status;
+        private static string _status;
 
-        public static HubConnectionState Status
+        public static string Status
         {
             get { return _status; }
             set { _status = value; }
@@ -16,8 +16,17 @@ namespace WPFClient
 
         public MainWindow()
         {
-            Status = App._connection.State;
+            new Thread(GetServerStatus).Start();
             InitializeComponent();
+        }
+
+        //This doesn't work yet
+        public void GetServerStatus()
+        {
+            if (App._connection.State == HubConnectionState.Disconnected)
+            {
+                Status = "Server is currently down";
+            }
         }
     }
 }

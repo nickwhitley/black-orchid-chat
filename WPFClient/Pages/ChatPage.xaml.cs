@@ -14,6 +14,13 @@ namespace WPFClient
     {
         public ObservableCollection<string> Messages { get; } = new ObservableCollection<string>();
         public BindingList<string> Users { get; private set; } = new BindingList<string>();
+        private static int _numberOfUsers;
+
+        public static int NumberOfUsers
+        {
+            get { return _numberOfUsers; }
+            set { _numberOfUsers = value; }
+        }
 
 
         public ChatPage()
@@ -87,7 +94,6 @@ namespace WPFClient
                     {
                         Users.Remove(localUser);
                     }
-
                 }
                 foreach (var remoteUser in userNames)
                 {
@@ -96,6 +102,8 @@ namespace WPFClient
                         Users.Add(remoteUser);
                     }
                 }
+
+                NumberOfUsers = Users.Count;
             });
         }
     }
