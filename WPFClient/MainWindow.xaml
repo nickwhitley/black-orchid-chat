@@ -6,7 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPFClient"
         mc:Ignorable="d"
-        Title="Login - BO Chat" Height="542" Width="847"
+        Title="Black Orchid Chat" Height="542" Width="847"
         FontFamily="Calibri" FontSize="20"
         Background="#23272a" Icon="/Media/InstaProfilePic.png" 
         WindowStartupLocation="CenterScreen"

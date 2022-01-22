@@ -17,27 +17,16 @@
         <StackPanel Grid.Column="0" 
                     Background="#FF221F1F">
             <Image Source="\Media\BlackOrchidLogoBlueResized.png"/>
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="2*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Label Content="Current Users"
+            <Label Content="Current Users"
                    Grid.Column="0"
                    HorizontalContentAlignment="Center" 
-                   HorizontalAlignment="Right"
+                   HorizontalAlignment="Center"
                    Foreground="#FFF8F5F5"/>
-                <Label Content="{Binding Source={x:Static local:ChatPage.NumberOfUsers}}"
-                   Grid.Column="1"
-                   HorizontalContentAlignment="Center" 
-                   HorizontalAlignment="Left"
-                   Foreground="#FFF8F5F5"/>
-            </Grid>
             <ListView x:Name="usersListView"
                       Height="Auto"
                       Background="#FF272525" BorderBrush="{x:Null}" Foreground="#FFF8F2F2">
             </ListView>
-            
+
         </StackPanel>
 
         <Grid Grid.Column="1">
@@ -49,16 +38,15 @@
                 <RowDefinition Height="12*"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <ListView x:Name="MessagesListView"
+            <ListBox x:Name="MessagesListView"
                        FontSize="17"
                        Grid.Column="0" 
                        Grid.Row="0"
                        Grid.ColumnSpan="2"
                        Background="#FF1A1818" 
                        Foreground="#FFFCFAFA"
-                       Margin="5"
-                       IsTextSearchEnabled="False">
-            </ListView>
+                       Margin="5">
+            </ListBox>
             <TextBox x:Name="MessageInputTextBox"
                      FontSize="17"
                      VerticalContentAlignment="Center"
