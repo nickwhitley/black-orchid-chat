@@ -32,9 +32,7 @@ jobs:
         
       - name: Install dependencies
         run: dotnet add package Microsoft.AspNet.SignalR.Core --version 2.4.2
-             dotnet add package Microsoft.AspNetCore.SignalR.Core --version 1.1.0
-             dotnet add package Microsoft.VisualStudio.Azure.Containers.Tools.Targets --version 1.14.0
-
+       
       - name: dotnet publish
         run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
