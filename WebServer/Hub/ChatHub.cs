@@ -34,7 +34,6 @@ namespace WebServer.Hubs
             await BroadcastUserConnected(user.Username);
 
             await BroadcastConnectionStatus(Context.ConnectionId);
-            //await BroadcastUserCount();
             await UpdateClientUsersOnlineList();
 
         }
@@ -46,24 +45,11 @@ namespace WebServer.Hubs
         }
 
         //Added by DC and needs to be fixed
+        //This shouldn't be needed server side, there must be a way to get connection status on client side
         public async Task BroadcastConnectionStatus(string callerContext)
         {
             await Clients.Caller.SendAsync("ReceiveConnectionStatus", $"{callerContext}");
         }
-
-        //public async Task BroadcastUserCount()
-        //{
-        //    int numberOfUsers = _userLogger.NumberOfUsers();
-        //    if (numberOfUsers == 2)
-        //    {
-        //        await Clients.Caller.SendAsync("ReceiveChatMessage", "There is 1 other user online.");
-        //    }
-        //    else
-        //    {
-        //        await Clients.Caller.SendAsync("ReceiveChatMessage", $"There are {numberOfUsers - 1} other Users online.");
-        //    }
-
-        //}
 
         public async Task BroadcastUserMessage(string message)
         {
