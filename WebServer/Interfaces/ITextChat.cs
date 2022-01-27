@@ -8,7 +8,7 @@ namespace WebServer.Interfaces
     public interface ITextChat
     {
         Task ReceiveUsername(string username);
-        Task BroadcastUserCount();
+        //Task BroadcastUserCount();
         Task DisplayUserIsTypingEvent(Dictionary<string, object> changesData);
 
         Task BroadcastUserConnected(string username);
