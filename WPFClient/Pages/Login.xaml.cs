@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR.Client;
 using System;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -9,9 +10,28 @@ namespace WPFClient
 {
     public partial class Login : Page
     {
+        public static string Status { get; set; } = string.Empty;
         public Login()
         {
+            statusLabel.Content = Status;
             InitializeComponent();
+
+            new Thread(RecieveConnectionStatus).Start();
+        }
+
+        private void RecieveConnectionStatus()
+        {
+            App._connection.On("ReceiveConnectionStatus", (string status) =>
+            {
+                if (App._connection.ConnectionId == status)
+                {
+                    Status = "Connected";
+                }
+                else
+                {
+                    Status = "Disconnected";
+                };
+            });
         }
 
         private void loginButton_Click(object sender, RoutedEventArgs e)
