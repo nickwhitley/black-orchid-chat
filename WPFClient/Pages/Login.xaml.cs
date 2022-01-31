@@ -18,7 +18,7 @@ namespace WPFClient
         public Login()
         {
             InitializeComponent();
-            new Thread(GetConnectionStatus).Start();
+            //new Thread(GetConnectionStatus).Start();
             statusLabel.Content = ConnectionStatus;
         }
 
