@@ -10,28 +10,21 @@ namespace WPFClient
 {
     public partial class Login : Page
     {
-        public static string Status { get; set; } = string.Empty;
+        private string _connectionStatus = App._connection.State.ToString();
+        public string ConnectionStatus {
+            get { return _connectionStatus; } 
+            set { ConnectionStatus = value; } 
+        }
         public Login()
         {
-            //statusLabel.Content = Status;
             InitializeComponent();
-
-            new Thread(RecieveConnectionStatus).Start();
+            new Thread(GetConnectionStatus).Start();
+            statusLabel.Content = ConnectionStatus;
         }
 
-        private void RecieveConnectionStatus()
+        private void GetConnectionStatus()
         {
-            App._connection.On("ReceiveConnectionStatus", (string status) =>
-            {
-                if (App._connection.ConnectionId == status)
-                {
-                    Status = "Connected";
-                }
-                else
-                {
-                    Status = "Disconnected";
-                };
-            });
+            //ConnectionStatus = App._connection.State.ToString();
         }
 
         private void loginButton_Click(object sender, RoutedEventArgs e)

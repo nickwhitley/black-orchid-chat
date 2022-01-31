@@ -7,7 +7,7 @@ namespace WPFClient
     public partial class MainWindow : Window
     {
         private static string _status;
-
+        // TODO Donald: Are you wanting this to be server status or connection status?
         public static string Status
         {
             get { return _status; }
@@ -16,8 +16,8 @@ namespace WPFClient
 
         public MainWindow()
         {
-            new Thread(GetServerStatus).Start();
             InitializeComponent();
+            new Thread(GetServerStatus).Start();
         }
 
         //This doesn't work yet

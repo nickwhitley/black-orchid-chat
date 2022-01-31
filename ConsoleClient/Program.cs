@@ -7,7 +7,7 @@ namespace ConsoleClient
 {
     class Program
     {
-        public static HubConnection _connection = ConnectToServer(@"https://524a-2601-548-4100-c1f0-1c59-21c5-3394-f751.ngrok.io/chat");
+        public static HubConnection _connection = ConnectToServer(@"https://blackorchidcht.azurewebsites.net/chat");
 
         static void Main(string[] args)
         {
@@ -19,9 +19,13 @@ namespace ConsoleClient
             {
                 WriteLine($"The server is currently down. Please try again later.");
                 Write("\r\nPress enter to exit");
+                PrintConnectionStatus();
                 ReadKey();
                 Environment.Exit(0);
             }
+
+            PrintConnectionStatus();
+
 
             AskForUserName();
 
@@ -30,6 +34,11 @@ namespace ConsoleClient
                 SendMessage();
 
             } while (_connection.State == HubConnectionState.Connected);
+        }
+
+        private static void PrintConnectionStatus()
+        {
+            Console.WriteLine(_connection.State);
         }
 
         private static HubConnection ConnectToServer(string address)
