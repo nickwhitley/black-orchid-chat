@@ -43,7 +43,7 @@ namespace WebServer.Hubs
         public async Task BroadcastUserConnected(string username)
         {
             await Clients.AllExcept(Context.ConnectionId).SendAsync("ReceiveChatMessage", $"{username} has connected.");
-            await Clients.Caller.SendAsync("ReceiveChatMessage", "You have connected.");
+            await Clients.Caller.SendAsync("ReceiveChatMessage", "This works in Azure now.");
         }
 
         //Added by DC and needs to be fixed
