@@ -18,7 +18,7 @@ namespace WebServer.Hubs
 
         IUserLogger _userLogger;
 
-        //testing git workflow for Azure deploy, delete this comment.
+        
 
         public ChatHub(IUserLogger userLogger)
         {

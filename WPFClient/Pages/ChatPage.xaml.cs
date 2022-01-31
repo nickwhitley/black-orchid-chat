@@ -14,8 +14,7 @@ namespace WPFClient
     public partial class ChatPage : Page
     {
 
-        //testing Azure deploy
-
+       
         public ObservableCollection<string> Messages { get; } = new ObservableCollection<string>();
         public BindingList<string> Users { get; private set; } = new BindingList<string>();
         private static int _numberOfUsers;
