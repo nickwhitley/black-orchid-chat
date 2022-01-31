@@ -21,9 +21,22 @@ jobs:
         with:
           dotnet-version: '3.1.301'
           include-prerelease: true
+          
+      - name: Install dependencies
+        run: dotnet restore
+          
+      - name: Build
+        run: |
+          cd DotNet.WebApp
+          dotnet build --configuration Release --no-restore
+          dotnet publish -c Release -o ../dotnet-webapp -r linux-x64 --self-contained true /p:UseAppHost=true
 
-      - name: dotnet publish
-        run: WebServer/Properties/PublishProfiles/BlackOrchidChat - Web Deploy.pubxml
+      - uses: azure/webapps-deploy@v2
+        name: Deploy
+        with:
+         app-name: ${{ env.AZURE_WEBAPP_NAME }}
+         publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE }}
+         package: '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/WebServer'
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
