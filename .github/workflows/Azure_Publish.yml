@@ -23,11 +23,6 @@ jobs:
           include-prerelease: true
           
           
-      - name: Build
-        run: |
-          cd DotNet.WebApp
-          dotnet build --configuration Release --no-restore
-          
       - uses: azure/webapps-deploy@v2
         name: Deploy
         with:
