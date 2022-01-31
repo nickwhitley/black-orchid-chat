@@ -23,7 +23,7 @@ jobs:
           include-prerelease: true
 
       - name: dotnet publish
-        run: ./BlackOrchidChat - Web Deploy.pubxml
+        run: black-orchid-chat/WebServer/Properties/PublishProfiles/BlackOrchidChat - Web Deploy.pubxml
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
