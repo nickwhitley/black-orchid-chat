@@ -5,10 +5,8 @@ name: Build and deploy ASP.Net Core app to Azure Web App - BlackOrchidChat
 
 on:
   push:
-    branches:
-      - master
     paths:
-      - 'WebServer/'
+      - 'WebServer/**'
   workflow_dispatch:
 
 jobs:
