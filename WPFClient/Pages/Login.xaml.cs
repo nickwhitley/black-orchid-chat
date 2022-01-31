@@ -13,7 +13,7 @@ namespace WPFClient
         public static string Status { get; set; } = string.Empty;
         public Login()
         {
-            statusLabel.Content = Status;
+            //statusLabel.Content = Status;
             InitializeComponent();
 
             new Thread(RecieveConnectionStatus).Start();
