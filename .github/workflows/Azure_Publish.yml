@@ -4,9 +4,11 @@
 name: Build and deploy ASP.Net Core app to Azure Web App - BlackOrchidChat
 
 on:
-  push:
+  pull_request:
     branches:
       - master
+    paths:
+      - 'WebServer/'
   workflow_dispatch:
 
 jobs:
@@ -23,7 +25,7 @@ jobs:
           include-prerelease: true
 
       - name: Build with dotnet
-        run: dotnet build --configuration Release --no-restore
+        run: dotnet build --configuration Release
 
       - name: dotnet publish
         run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
