@@ -13,6 +13,8 @@ namespace WPFClient
 {
     public partial class ChatPage : Page
     {
+
+        //using for CI/CD testing, delete this comment.
         public ObservableCollection<string> Messages { get; } = new ObservableCollection<string>();
         public BindingList<string> Users { get; private set; } = new BindingList<string>();
         private static int _numberOfUsers;
