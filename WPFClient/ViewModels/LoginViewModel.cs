@@ -7,8 +7,8 @@ namespace WPFClient.ViewModels
 {
     public class LoginViewModel : Screen
     {
-        private readonly IServerConnection connection;
-        private readonly IWindowManager windowManager;
+        private readonly IServerConnection _connection;
+        private readonly IEventAggregator _eventAggregator;
         private string statusLabel = string.Empty;
         private string userName;
 
@@ -24,10 +24,13 @@ namespace WPFClient.ViewModels
             set => Set(ref statusLabel, value);
         }
 
-        public LoginViewModel(IServerConnection connection, IWindowManager windowManager)
+        public LoginViewModel(
+            IServerConnection connection,
+            IEventAggregator eventAggregator)
         {
-            this.connection = connection;
-            this.windowManager = windowManager;
+            _connection = connection;
+            _eventAggregator = eventAggregator;
+
             StatusLabel = connection.HubConnection.State.ToString();
         }
         public bool CanLogin(string userName)
@@ -37,9 +40,10 @@ namespace WPFClient.ViewModels
 
         public void Login(string userName)
         {
-            connection.HubConnection.InvokeCoreAsync("ReceiveUsername",
+            _connection.HubConnection.InvokeCoreAsync("ReceiveUsername",
                                         args: new[] { userName });
-            windowManager.ShowWindowAsync(new ChatPageViewModel(connection));
+
+            _eventAggregator.PublishOnUIThreadAsync(new ValidUserNameEntered());
         }
 
         //private void loginButton_Click(object sender, RoutedEventArgs e)

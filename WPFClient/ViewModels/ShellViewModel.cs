@@ -9,10 +9,8 @@ using WPFClient.Models;
 
 namespace WPFClient.ViewModels
 {
-    internal class ShellViewModel : Conductor<Screen>.Collection.OneActive
-    {
+    internal class ShellViewModel : Conductor<Screen>.Collection.OneActive, IHandle<ValidUserNameEntered>    {
         private readonly IEventAggregator eventAggregator;
-        private readonly IServerConnection serverConnection;
         private readonly LoginViewModel loginViewModel;
         private readonly ChatPageViewModel chatPageViewModel;
 
@@ -22,11 +20,16 @@ namespace WPFClient.ViewModels
                               ChatPageViewModel chatPageViewModel)
         {
             this.eventAggregator = eventAggregator;
-            this.serverConnection = serverConnection;
             this.loginViewModel = loginViewModel;
             this.chatPageViewModel = chatPageViewModel;
 
             Items.AddRange(new Screen[] { loginViewModel, chatPageViewModel });
+        }
+
+        public Task HandleAsync(ValidUserNameEntered message, CancellationToken cancellationToken)
+        {
+            ChangeActiveItemAsync(chatPageViewModel, true);
+            return Task.CompletedTask;
         }
 
         protected override Task OnActivateAsync(CancellationToken cancellationToken)
@@ -34,6 +37,12 @@ namespace WPFClient.ViewModels
             eventAggregator.SubscribeOnPublishedThread(this);
             ActivateItemAsync(loginViewModel);
             return base.OnActivateAsync(cancellationToken);
+        }
+
+        protected override Task OnDeactivateAsync(bool close, CancellationToken cancellationToken)
+        {
+            eventAggregator.Unsubscribe(this);
+            return base.OnDeactivateAsync(close, cancellationToken);
         }
     }
 }

@@ -7,7 +7,7 @@ namespace WPFClient.Models
 {
     public class ServerConnection : PropertyChangedBase, IServerConnection
     {
-        private HubConnection _hubConnection;
+        private static HubConnection _hubConnection;
 
         public HubConnection HubConnection
         {
@@ -18,7 +18,6 @@ namespace WPFClient.Models
                 NotifyOfPropertyChange(() => HubConnection);
             }
         }
-
         public ServerConnection()
         {
             InitializeClientConnection();
@@ -29,7 +28,7 @@ namespace WPFClient.Models
                 .WithUrl(@"https://blackorchidchat.azurewebsites.net/chat")
                 .Build();
 
-            new Thread(() => connection.StartAsync().Wait());
+            connection.StartAsync();
 
             HubConnection = connection;
         }
