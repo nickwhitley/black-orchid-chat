@@ -35,7 +35,6 @@ namespace WebServer.Hubs
 
             PrintLog($"{user.Username} has connected.");
             await BroadcastUserConnected(user.Username);
-            await BroadcastConnectionStatus(Context.ConnectionId);
             await UpdateClientUsersOnlineList();
 
         }
@@ -44,13 +43,6 @@ namespace WebServer.Hubs
         {
             await Clients.AllExcept(Context.ConnectionId).SendAsync("ReceiveChatMessage", $"{username} has connected.");
             await Clients.Caller.SendAsync("ReceiveChatMessage", "This works in Azure now.");
-        }
-
-        //Added by DC and needs to be fixed
-        //This shouldn't be needed server side, there must be a way to get connection status on client side
-        public async Task BroadcastConnectionStatus(string callerContext)
-        {
-            await Clients.Caller.SendAsync("ReceiveConnectionStatus", $"{callerContext}");
         }
 
         public async Task BroadcastUserMessage(string message)

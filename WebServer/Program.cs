@@ -24,21 +24,5 @@ namespace WebServer
             WebHost.CreateDefaultBuilder(args)
             .UseStartup<Startup>();
 
-        private static bool isPortAvailable(int port)
-        {
-
-            var tcpConnInfoArray = IPGlobalProperties.GetIPGlobalProperties().GetActiveTcpConnections();
-
-            foreach (TcpConnectionInformation tcpInfo in tcpConnInfoArray)
-            {
-                if (tcpInfo.LocalEndPoint.Port == port)
-                {
-                    Console.WriteLine($"Port: {port} is not available.");
-                    return false;
-                }
-            }
-            Console.WriteLine($"Port: {port} is available.");
-            return true;
-        }
     }
 }

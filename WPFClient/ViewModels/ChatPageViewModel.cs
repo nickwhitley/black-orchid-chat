@@ -62,7 +62,6 @@ namespace WPFClient.ViewModels
 
         }
 
-        // Not working
         public void DisplayUserIsTyping()
         {
             _connection.HubConnection.On("DisplayUserIsTyping", (string userTypingMessage) =>
@@ -71,7 +70,6 @@ namespace WPFClient.ViewModels
             });
         }
 
-        // Not working
         public void StopDisplayUserTyping()
         {
             _connection.HubConnection.On("StopDisplayUserTyping", (string messageToRemove) =>
@@ -79,6 +77,7 @@ namespace WPFClient.ViewModels
                 Messages.Remove(messageToRemove);
             });
         }
+
         public void MessageBoxTextChanged(TextChangedEventArgs e)
         {
             Dictionary<string, object> changesData = new Dictionary<string, object>();
@@ -88,6 +87,7 @@ namespace WPFClient.ViewModels
 
             _connection.HubConnection.InvokeCoreAsync("DisplayUserIsTypingEvent", args: new[] { changesData });
         }
+
         public void MessageEntered(KeyEventArgs args, TextBox source)
         {
             if (args.Key == Key.Enter)
@@ -96,6 +96,7 @@ namespace WPFClient.ViewModels
                 Message = string.Empty;
             }
         }
+
         public void UpdateUsers()
         {
             _connection.HubConnection.On("UpdateUsersList", (List<string> userNames) =>
@@ -117,7 +118,6 @@ namespace WPFClient.ViewModels
             });
         }
 
-        // Not working
         public void MessageBoxInitialized(ChatPageView view)
         {
             view.Message.Focus();

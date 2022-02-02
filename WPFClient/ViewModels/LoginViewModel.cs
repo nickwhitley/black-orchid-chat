@@ -63,7 +63,6 @@ namespace WPFClient.ViewModels
             }
         }
 
-        // Not working
         public void ChangeConnectionStatus()
         {
             _connection.HubConnection.On("ChangeConnectionStatus", (string status) =>
