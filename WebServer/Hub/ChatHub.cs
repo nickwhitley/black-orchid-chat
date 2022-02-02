@@ -117,10 +117,12 @@ namespace WebServer.Hubs
             return returnData;
         }
 
-        public override Task OnConnectedAsync()
+        public override async Task OnConnectedAsync()
         {
             PrintLog("Client connected.");
-            return Task.CompletedTask;
+
+            await Clients.Caller.SendAsync("ChangeConnectionStatus", "connected");
+
         }
 
 
