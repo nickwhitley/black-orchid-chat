@@ -18,6 +18,8 @@ namespace WebServer.Hubs
 
         IUserLogger _userLogger;
 
+        
+
         public ChatHub(IUserLogger userLogger)
         {
             _userLogger = userLogger;
@@ -31,10 +33,9 @@ namespace WebServer.Hubs
 
             _userLogger.AddUser(user);
 
+            PrintLog($"{user.Username} has connected.");
             await BroadcastUserConnected(user.Username);
-
             await BroadcastConnectionStatus(Context.ConnectionId);
-            //await BroadcastUserCount();
             await UpdateClientUsersOnlineList();
 
         }
@@ -42,28 +43,15 @@ namespace WebServer.Hubs
         public async Task BroadcastUserConnected(string username)
         {
             await Clients.AllExcept(Context.ConnectionId).SendAsync("ReceiveChatMessage", $"{username} has connected.");
-            await Clients.Caller.SendAsync("ReceiveChatMessage", "You have connected.");
+            await Clients.Caller.SendAsync("ReceiveChatMessage", "This works in Azure now.");
         }
 
         //Added by DC and needs to be fixed
+        //This shouldn't be needed server side, there must be a way to get connection status on client side
         public async Task BroadcastConnectionStatus(string callerContext)
         {
             await Clients.Caller.SendAsync("ReceiveConnectionStatus", $"{callerContext}");
         }
-
-        //public async Task BroadcastUserCount()
-        //{
-        //    int numberOfUsers = _userLogger.NumberOfUsers();
-        //    if (numberOfUsers == 2)
-        //    {
-        //        await Clients.Caller.SendAsync("ReceiveChatMessage", "There is 1 other user online.");
-        //    }
-        //    else
-        //    {
-        //        await Clients.Caller.SendAsync("ReceiveChatMessage", $"There are {numberOfUsers - 1} other Users online.");
-        //    }
-
-        //}
 
         public async Task BroadcastUserMessage(string message)
         {
@@ -82,7 +70,7 @@ namespace WebServer.Hubs
             string username = user.Username;
             string messageToSend = $"{username}: {message}";
 
-            Console.WriteLine($"message received[{username}]");
+            PrintLog($"message received[{username}]");
 
             await Clients.All.SendAsync("ReceiveChatMessage", messageToSend);
         }
@@ -129,10 +117,12 @@ namespace WebServer.Hubs
             return returnData;
         }
 
-        public override Task OnConnectedAsync()
+        public override async Task OnConnectedAsync()
         {
-            Console.WriteLine("Client connected.");
-            return Task.CompletedTask;
+            PrintLog("Client connected.");
+
+            await Clients.Caller.SendAsync("ChangeConnectionStatus", "connected");
+
         }
 
 
@@ -142,16 +132,22 @@ namespace WebServer.Hubs
             {
                 IUser user = _userLogger.TryGetUser(Context.ConnectionId);
                 _userLogger.RemoveUser(user);
-                Console.WriteLine($"{user.Username} has disconnected.");
+                PrintLog($"{user.Username} has disconnected.");
                 await Clients.All.SendAsync("ReceiveChatMessage", $"{ user.Username } has disconnected");
                 await UpdateClientUsersOnlineList();
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
-                Console.WriteLine("Unknown client disconnected.");
+                PrintLog(ex.Message);
+                PrintLog("Unknown client disconnected.");
             }
 
+        }
+
+        private void PrintLog(string message)
+        {
+            Console.WriteLine(message);
+            System.Diagnostics.Trace.TraceInformation(message);
         }
     }
 }

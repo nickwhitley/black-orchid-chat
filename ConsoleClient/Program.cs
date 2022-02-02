@@ -19,9 +19,13 @@ namespace ConsoleClient
             {
                 WriteLine($"The server is currently down. Please try again later.");
                 Write("\r\nPress enter to exit");
+                PrintConnectionStatus();
                 ReadKey();
                 Environment.Exit(0);
             }
+
+            PrintConnectionStatus();
+
 
             AskForUserName();
 
@@ -30,6 +34,11 @@ namespace ConsoleClient
                 SendMessage();
 
             } while (_connection.State == HubConnectionState.Connected);
+        }
+
+        private static void PrintConnectionStatus()
+        {
+            Console.WriteLine(_connection.State);
         }
 
         private static HubConnection ConnectToServer(string address)
