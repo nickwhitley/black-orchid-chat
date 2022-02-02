@@ -7,7 +7,7 @@ namespace ConsoleClient
 {
     class Program
     {
-        public static HubConnection _connection = ConnectToServer(@"https://blackorchidcht.azurewebsites.net/chat");
+        public static HubConnection _connection = ConnectToServer(@"https://blackorchidchat.azurewebsites.net/chat");
 
         static void Main(string[] args)
         {
