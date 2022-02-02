@@ -33,8 +33,8 @@ namespace WebServer.Hubs
 
             _userLogger.AddUser(user);
 
+            PrintLog($"{user.Username} has connected.");
             await BroadcastUserConnected(user.Username);
-
             await BroadcastConnectionStatus(Context.ConnectionId);
             await UpdateClientUsersOnlineList();
 
@@ -70,7 +70,7 @@ namespace WebServer.Hubs
             string username = user.Username;
             string messageToSend = $"{username}: {message}";
 
-            Console.WriteLine($"message received[{username}]");
+            PrintLog($"message received[{username}]");
 
             await Clients.All.SendAsync("ReceiveChatMessage", messageToSend);
         }
@@ -119,7 +119,7 @@ namespace WebServer.Hubs
 
         public override Task OnConnectedAsync()
         {
-            Console.WriteLine("Client connected.");
+            PrintLog("Client connected.");
             return Task.CompletedTask;
         }
 
@@ -130,16 +130,22 @@ namespace WebServer.Hubs
             {
                 IUser user = _userLogger.TryGetUser(Context.ConnectionId);
                 _userLogger.RemoveUser(user);
-                Console.WriteLine($"{user.Username} has disconnected.");
+                PrintLog($"{user.Username} has disconnected.");
                 await Clients.All.SendAsync("ReceiveChatMessage", $"{ user.Username } has disconnected");
                 await UpdateClientUsersOnlineList();
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
-                Console.WriteLine("Unknown client disconnected.");
+                PrintLog(ex.Message);
+                PrintLog("Unknown client disconnected.");
             }
 
+        }
+
+        private void PrintLog(string message)
+        {
+            Console.WriteLine(message);
+            System.Diagnostics.Trace.TraceInformation(message);
         }
     }
 }
