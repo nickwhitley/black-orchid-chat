@@ -7,17 +7,14 @@ namespace WPFClient.Models
 {
     public class ServerConnection : PropertyChangedBase, IServerConnection
     {
-        private static HubConnection _hubConnection;
+        private HubConnection _hubConnection;
 
         public HubConnection HubConnection
         {
             get => _hubConnection;
-            set 
-            { 
-                _hubConnection = value;
-                NotifyOfPropertyChange(() => HubConnection);
-            }
+            set { _hubConnection = value; }
         }
+
         public ServerConnection()
         {
             InitializeClientConnection();

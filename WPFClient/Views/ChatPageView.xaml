@@ -4,9 +4,12 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:WPFClient" 
-      xmlns:i="http://schemas.microsoft.com/xaml/behaviors" xmlns:cal="http://caliburnmicro.com" xmlns:viewmodels="clr-namespace:WPFClient.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:ChatPageViewModel}"
+      xmlns:i="http://schemas.microsoft.com/xaml/behaviors" 
+      xmlns:cal="http://caliburnmicro.com" 
+      xmlns:viewmodels="clr-namespace:WPFClient.ViewModels" 
+      d:DataContext="{d:DesignInstance Type=viewmodels:ChatPageViewModel}"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800">
+      d:DesignHeight="450" d:DesignWidth="800" Background="#FF221F1F">
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -24,7 +27,9 @@
                    Foreground="#FFF8F5F5"/>
             <ListView x:Name="Users"
                       Height="Auto"
-                      Background="#FF272525" BorderBrush="{x:Null}" Foreground="#FFF8F2F2">
+                      Background="#FF272525" 
+                      BorderBrush="{x:Null}" 
+                      Foreground="#FFF8F2F2">
             </ListView>
 
         </StackPanel>
@@ -57,8 +62,10 @@
                      Margin="5,1,5,5" 
                      TabIndex="0"
                      MaxLength="1500"
+                     Focusable="True"
                      cal:Message.Attach="[Event KeyDown] = [Action MessageEntered($eventArgs, $source)]; 
-                     [Event TextChanged] = [Action MessageBoxTextChanged($eventArgs)]">
+                     [Event TextChanged] = [Action MessageBoxTextChanged($eventArgs)];
+                     [Event Initialized] = [Action MessageBoxInitialized($view)]">
             </TextBox>
         </Grid>
     </Grid>

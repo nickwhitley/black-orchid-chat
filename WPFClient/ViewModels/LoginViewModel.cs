@@ -1,7 +1,9 @@
 ﻿using Caliburn.Micro;
 using Microsoft.AspNetCore.SignalR.Client;
+using System.Threading;
+using System.Windows.Controls;
+using System.Windows.Input;
 using WPFClient.Models;
-using WPFClient.Views;
 
 namespace WPFClient.ViewModels
 {
@@ -9,7 +11,7 @@ namespace WPFClient.ViewModels
     {
         private readonly IServerConnection _connection;
         private readonly IEventAggregator _eventAggregator;
-        private string statusLabel = string.Empty;
+        private string statusLabel = "Server is down";
         private string userName;
 
         public string UserName
@@ -21,7 +23,11 @@ namespace WPFClient.ViewModels
         public string StatusLabel
         {
             get => statusLabel;
-            set => Set(ref statusLabel, value);
+            set
+            {
+                statusLabel = value;
+                NotifyOfPropertyChange(() => StatusLabel);
+            }
         }
 
         public LoginViewModel(
@@ -31,7 +37,7 @@ namespace WPFClient.ViewModels
             _connection = connection;
             _eventAggregator = eventAggregator;
 
-            StatusLabel = connection.HubConnection.State.ToString();
+            new Thread(ChangeConnectionStatus).Start();
         }
         public bool CanLogin(string userName)
         {
@@ -46,49 +52,29 @@ namespace WPFClient.ViewModels
             _eventAggregator.PublishOnUIThreadAsync(new ValidUserNameEntered());
         }
 
-        //private void loginButton_Click(object sender, RoutedEventArgs e)
-        //{
-        //    if (userNameTextBox.Text != "")
-        //    {
-        //        connection.HubConnection.InvokeCoreAsync("ReceiveUsername",
-        //                                args: new[] { userNameTextBox.Text });
+        public void EnteredUserName(TextBox userNameTextBox, KeyEventArgs args)
+        {
+            if (args.Key == Key.Enter)
+            {
+                _connection.HubConnection.InvokeCoreAsync("ReceiveUsername",
+                                        args: new[] { userName });
 
-        //        ChatPageView chatPage = new ChatPageView();
-        //        NavigationService.Navigate(chatPage);
-        //    }
-        //    else
-        //    {
-        //        usernameLabel.Content = "Cannot be blank, idiot";
-        //    }
-        //}
+                _eventAggregator.PublishOnUIThreadAsync(new ValidUserNameEntered());
+            }
+        }
 
-        //private void userNameTextBox_KeyDown(object sender, KeyEventArgs e)
-        //{
-        //    if (e.Key == Key.Enter)
-        //    {
-        //        if (userNameTextBox.Text != "")
-        //        {
-        //            App._connection.InvokeCoreAsync("ReceiveUsername",
-        //                                    args: new[] { userNameTextBox.Text });
-
-        //            ChatPageView chatPage = new ChatPageView();
-        //            NavigationService.Navigate(chatPage);
-        //        }
-        //        else
-        //        {
-        //            usernameLabel.Content = "Cannot be blank, idiot";
-        //        }
-        //    }
-        //}
-
-        //private void userNameTextBox_Initialized(object sender, EventArgs e)
-        //{
-        //    userNameTextBox.Focus();
-        //}
-
-        //private void userNameTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        //{
-        //    usernameLabel.Content = string.Empty;
-        //}
+        // Not working
+        public void ChangeConnectionStatus()
+        {
+            _connection.HubConnection.On("ChangeConnectionStatus", (string status) =>
+            {
+                if (status != null)
+                {
+                    StatusLabel = "Connected";
+                }
+                else
+                    StatusLabel = "Server is down";
+            });
+        }
     }
 }
