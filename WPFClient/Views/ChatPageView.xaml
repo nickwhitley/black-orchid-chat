@@ -3,14 +3,16 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:WPFClient" xmlns:i="http://schemas.microsoft.com/xaml/behaviors" xmlns:cal="http://caliburnmicro.com"
-             mc:Ignorable="d" 
+      xmlns:local="clr-namespace:WPFClient" 
+      xmlns:i="http://schemas.microsoft.com/xaml/behaviors" xmlns:cal="http://caliburnmicro.com" xmlns:viewmodels="clr-namespace:WPFClient.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:ChatPageViewModel}"
+      mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800">
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="200*"/>
+            <ColumnDefinition Width="439*"/>
+            <ColumnDefinition Width="161*"/>
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Column="0" 
                     Background="#FF221F1F">
@@ -27,7 +29,7 @@
 
         </StackPanel>
 
-        <Grid Grid.Column="1">
+        <Grid Grid.Column="1" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="9*"/>
                 <ColumnDefinition Width="*"/>
@@ -45,7 +47,7 @@
                        Foreground="#FFFCFAFA"
                        Margin="5">
             </ListBox>
-            <TextBox x:Name="MessageInputTextBox"
+            <TextBox x:Name="Message"
                      FontSize="17"
                      VerticalContentAlignment="Center"
                      TextWrapping="Wrap"
@@ -54,15 +56,9 @@
                      Grid.ColumnSpan="2"
                      Margin="5,1,5,5" 
                      TabIndex="0"
-                     MaxLength="1500">
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="KeyDown">
-                        <cal:ActionMessage MethodName="MessageInputTextBox_KeyDown" >
-                            <cal:Parameter Value="$this" />
-                            <cal:Parameter Value="$eventArgs" />
-                        </cal:ActionMessage>
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
+                     MaxLength="1500"
+                     cal:Message.Attach="[Event KeyDown] = [Action MessageEntered($eventArgs, $source)]; 
+                     [Event TextChanged] = [Action MessageBoxTextChanged($eventArgs)]">
             </TextBox>
         </Grid>
     </Grid>

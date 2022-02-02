@@ -13,12 +13,31 @@ namespace WPFClient.ViewModels
 {
     public class ChatPageViewModel : Screen
     {
-        public ObservableCollection<string> Messages { get; } = new ObservableCollection<string>();
         public BindingList<string> Users { get; private set; } = new BindingList<string>();
-        public object MessageInputTextBox { get; private set; }
-
+        private ObservableCollection<string> _messages;
+        private string _message;
         private readonly IServerConnection _connection;
         private readonly IEventAggregator _eventAggregator;
+
+        public ObservableCollection<string> Messages
+        {
+            get => _messages;
+            set 
+            { 
+                _messages = value; 
+                NotifyOfPropertyChange(() => Messages);
+            }
+        }
+
+        public string Message
+        {
+            get => _message;
+            set 
+            { 
+                _message = value; 
+                NotifyOfPropertyChange(() => Message);
+            }
+        }
 
         public ChatPageViewModel(IServerConnection connection,
                                  IEventAggregator eventAggregator)
@@ -50,7 +69,7 @@ namespace WPFClient.ViewModels
                 Messages.Remove(messageToRemove);
             });
         }
-        private void MessageInputTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        public void MessageBoxTextChanged(TextChangedEventArgs e)
         {
             Dictionary<string, object> changesData = new Dictionary<string, object>();
             changesData.Add("Offset", e.Changes.First().Offset);
@@ -59,23 +78,16 @@ namespace WPFClient.ViewModels
 
             _connection.HubConnection.InvokeCoreAsync("DisplayUserIsTypingEvent", args: new[] { changesData });
         }
-        public void MessageInputTextBox_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
+        public void MessageEntered(KeyEventArgs args, TextBox source)
+         {
+            if (args.Key == Key.Enter)
             {
-                _connection.HubConnection.InvokeCoreAsync("BroadcastUserMessage", args: new[] { MessageInputTextBox });
-                MessageInputTextBox = string.Empty;
+                _connection.HubConnection.InvokeCoreAsync("BroadcastUserMessage", args: new[] { source.Text });
+                Message = string.Empty;
             }
         }
     }
 }
-
-
-
-
-
-
-
 
 
 //private void MessageInputTextBox_Initialized(object sender, EventArgs e)
